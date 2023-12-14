@@ -170,7 +170,9 @@ public class Evento implements Serializable {
 
     @Override
     public String toString() {
-        return "Evento{" + "id_evento=" + id_evento + ", Nombre=" + nombre + ", FechaEvento=" + fechaEvento + ", Descripcion=" + descripcion + ", Aforo=" + aforo + ", catering=" + catering + '}';
+        return "Evento{" + "id_evento=" + id_evento + '}';
     }
+
+    
 
 }

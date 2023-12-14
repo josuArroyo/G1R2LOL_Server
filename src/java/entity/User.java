@@ -22,6 +22,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,18 +32,20 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @NamedQueries({
-@NamedQuery(name="findUserByEmailAndPasswd",
-            query="SELECT u FROM User u where email = :email and passwd = passwd"
-),
-@NamedQuery(name="findForUserType",
-            query="SELECT u FROM User u where userType = :userType"
-),
-@NamedQuery(name="findForName",
-            query="SELECT p FROM Patrocinador p where nombre = :nombre"
-)
+    @NamedQuery(name = "findUserByEmailAndPasswd",
+            query = "SELECT u FROM User u where email = :email and passwd = passwd"
+    )
+    ,
+@NamedQuery(name = "findForUserType",
+            query = "SELECT u FROM User u where userType = :userType"
+    )
+    ,
+@NamedQuery(name = "findForName",
+            query = "SELECT p FROM Patrocinador p where nombre = :nombre"
+    )
 })
-@DiscriminatorColumn(name="userType", discriminatorType = DiscriminatorType.STRING)
-@Table(name="user", schema = "LOLdb")
+@DiscriminatorColumn(name = "userType", discriminatorType = DiscriminatorType.STRING)
+@Table(name = "user", schema = "LOLdb")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @XmlRootElement
 public class User implements Serializable {
@@ -59,7 +63,6 @@ public class User implements Serializable {
     private String email;
     private String passwd;
     private String ConfirmPasswd;
-    private Date fechaNac;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "userType", insertable = false, updatable = false)
@@ -103,14 +106,6 @@ public class User implements Serializable {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setFechaNac(Date fechaNac) {
-        this.fechaNac = fechaNac;
-    }
-
-    public Date getFechaNac() {
-        return fechaNac;
     }
 
     public Integer getIdUser() {

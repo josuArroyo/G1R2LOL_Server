@@ -7,7 +7,7 @@ package entity;
 
 /**
  *
- * @author Egoitz y Josu.
+ * @author Egoitz y Josu
  */
 public enum UserType {
     SOCIO, VOLUNTARIO

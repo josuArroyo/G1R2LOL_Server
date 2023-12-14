@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package entity;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -19,25 +20,28 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
 /**
- * 
- * @author Egoitz Fernandez 
+ *
+ * @author Egoitz Fernandez
  */
 @Entity
-@Table(name="patrocinador",schema="LOLdb")
+@Table(name = "patrocinador", schema = "LOLdb")
 @NamedQueries({
-@NamedQuery(name="findAllPatrocinador",
-            query="SELECT p FROM Patrocinador p"
-),
-@NamedQuery(name="findForDuration",
-            query="SELECT p FROM Patrocinador p where duracion = :duracion"
-),
-@NamedQuery(name="findForName",
-            query="SELECT p FROM Patrocinador p where nombre = :nombre"
-)
+    @NamedQuery(name = "findAllPatrocinador",
+            query = "SELECT p FROM Patrocinador p"
+    )
+    ,
+@NamedQuery(name = "findForDuration",
+            query = "SELECT p FROM Patrocinador p where duracion = :duracion"
+    )
+    ,
+@NamedQuery(name = "findForName",
+            query = "SELECT p FROM Patrocinador p where nombre = :nombre"
+    )
 })
 @XmlRootElement
-public class Patrocinador implements Serializable{
+public class Patrocinador implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,10 +52,9 @@ public class Patrocinador implements Serializable{
     private Integer telefono;
     @Temporal(TemporalType.DATE)
     private Date DuracionPatrocinio;
-    
+
     @ManyToMany(mappedBy = "patrocinador")
     private List<Evento> evento;
-
 
     public void setId_Patrocinador(Integer id_Patrocinador) {
         this.id_Patrocinador = id_Patrocinador;
@@ -104,6 +107,7 @@ public class Patrocinador implements Serializable{
     public void setEvento(List<Evento> evento) {
         this.evento = evento;
     }
+
     @XmlTransient
     public List<Evento> getEvento() {
         return evento;
@@ -138,6 +142,5 @@ public class Patrocinador implements Serializable{
     public String toString() {
         return "Patrocinador{" + "id_Patrocinador=" + id_Patrocinador + '}';
     }
-  
-}
 
+}
