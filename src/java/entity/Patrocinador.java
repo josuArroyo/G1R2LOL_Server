@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 /**
  * 
- * @author Egoitz Fernandez Egurrola
+ * @author Egoitz Fernandez 
  */
 @Entity
 @Table(name="patrocinador",schema="LOLdb")
