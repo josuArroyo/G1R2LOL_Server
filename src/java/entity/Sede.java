@@ -7,7 +7,7 @@ package entity;
 
 /**
  *
- * @author Eneko.
+ * @author Eneko
  */
 import java.io.Serializable;
 import java.time.LocalDate;

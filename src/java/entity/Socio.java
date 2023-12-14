@@ -7,7 +7,7 @@ package entity;
 
 /**
  *
- * @author Eneko.
+ * @author Eneko
  */
 import java.util.List;
 import java.util.Objects;
