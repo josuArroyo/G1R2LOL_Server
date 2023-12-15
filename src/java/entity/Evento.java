@@ -35,9 +35,13 @@ import javax.xml.bind.annotation.XmlTransient;
     ,
     @NamedQuery(name = "findEventByEventId", query = "SELECT e FROM Evento e WHERE e.id_evento = :idEvento")
     ,
-    @NamedQuery(name = "findEventByType", query = "SELECT e FROM Evento e WHERE e.aforo = :aforo")
+    @NamedQuery(name = "findEventByAforo", query = "SELECT e FROM Evento e WHERE e.aforo = :aforo")
     ,
-    @NamedQuery(name = "findEventByType", query = "SELECT e FROM Evento e WHERE e.fechaEvento = :fechaEvento")
+    @NamedQuery(name = "findEventByDate", query = "SELECT e FROM Evento e WHERE e.fechaEvento = :fechaEvento")
+    ,    
+    @NamedQuery(name = "findEventBySede", query = "SELECT e FROM Evento e WHERE e.sede = :sede")
+    ,    
+    @NamedQuery(name = "findEventByPatrocinador", query = "SELECT e FROM Evento e WHERE e.patrocinador = :patrocinador")
 })
 
 @XmlRootElement
@@ -135,6 +139,7 @@ public class Evento implements Serializable {
         this.socio = socio;
     }
 
+    @XmlTransient
     public Set<Patrocinador> getPatrocinador() {
         return patrocinador;
     }

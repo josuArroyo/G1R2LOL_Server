@@ -10,45 +10,45 @@ package entity;
  * @author Eneko
  */
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "trabaja", schema = "LOLdb")
+@XmlRootElement
 public class Trabaja implements Serializable {
-//si
-    private String DNI;
-    private Integer id_sede;
+
     @EmbeddedId
+    private TrabajaId trabajaid;
+    
+    
+    
     private String puesto;
+   
+    @ManyToOne 
     @MapsId("socio")
-    @ManyToOne
     private Socio socio;
-    @MapsId("sede")
+    
     @ManyToOne
+    @MapsId("sede")
     private Sede sede;
 
-    public String getDNI() {
-        return DNI;
+    public TrabajaId getTrabajaid() {
+        return trabajaid;
     }
 
-    public void setDNI(String DNI) {
-        this.DNI = DNI;
+    public void setTrabajaid(TrabajaId trabajaid) {
+        this.trabajaid = trabajaid;
     }
 
-    public Integer getId_sede() {
-        return id_sede;
-    }
+   
 
-    public void setId_sede(Integer id_sede) {
-        this.id_sede = id_sede;
-    }
+    
 
     public String getPuesto() {
         return puesto;
@@ -76,9 +76,8 @@ public class Trabaja implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 67 * hash + Objects.hashCode(this.DNI);
-        hash = 67 * hash + Objects.hashCode(this.id_sede);
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.trabajaid);
         return hash;
     }
 
@@ -94,10 +93,7 @@ public class Trabaja implements Serializable {
             return false;
         }
         final Trabaja other = (Trabaja) obj;
-        if (!Objects.equals(this.DNI, other.DNI)) {
-            return false;
-        }
-        if (!Objects.equals(this.id_sede, other.id_sede)) {
+        if (!Objects.equals(this.trabajaid, other.trabajaid)) {
             return false;
         }
         return true;
@@ -105,8 +101,13 @@ public class Trabaja implements Serializable {
 
     @Override
     public String toString() {
-        return "Trabaja{" + "DNI=" + DNI + ", id_sede=" + id_sede + ", puesto=" + puesto + ", socio=" + socio + ", sede=" + sede + '}';
+        return "Trabaja{" + "trabajaid=" + trabajaid + '}';
     }
-    //hola
+
+   
+
+    
+
+    
 
 }

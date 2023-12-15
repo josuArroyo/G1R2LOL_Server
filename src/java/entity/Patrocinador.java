@@ -38,7 +38,12 @@ import javax.xml.bind.annotation.XmlTransient;
     ,
 @NamedQuery(name = "findForName",
             query = "SELECT p FROM Patrocinador p where nombre = :nombre"
+    
     )
+           ,
+@NamedQuery(name = "findForEvento",
+            query = "SELECT p FROM Patrocinador p where evento = :evento"
+)
 })
 @XmlRootElement
 public class Patrocinador implements Serializable {

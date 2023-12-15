@@ -20,20 +20,22 @@ public class Voluntario extends User {
      private int numero_Voluntariados;
     
     @ManyToOne
-    private List<Sede> sede;
+    private Sede sede;
     
 
     public void setNumero_Voluntariados(int numero_Voluntariados) {
         this.numero_Voluntariados = numero_Voluntariados;
     }
 
-    public void setSede(List<Sede> sede) {
+    public Sede getSede() {
+        return sede;
+    }
+
+    public void setSede(Sede sede) {
         this.sede = sede;
     }
 
-    public List<Sede> getSede() {
-        return sede;
-    }
+    
 
     @Override
     public int hashCode() {

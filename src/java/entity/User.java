@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
             query = "SELECT u FROM User u where userType = :userType"
     )
     ,
-@NamedQuery(name = "findForName",
+@NamedQuery(name = "findForUserName",
             query = "SELECT p FROM Patrocinador p where nombre = :nombre"
     )
 })
@@ -52,7 +52,7 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idUser;
+    private Integer id_user;
 
     @Column(unique = true)
     private String DNI;
@@ -92,12 +92,12 @@ public class User implements Serializable {
         return apellido;
     }
 
-    public void setTelefono(int telefono) {
-        this.telefono = telefono;
+    public Integer getTelefono() {
+        return telefono;
     }
 
-    public int getTelefono() {
-        return telefono;
+    public void setTelefono(Integer telefono) {
+        this.telefono = telefono;
     }
 
     public void setEmail(String email) {
@@ -108,14 +108,6 @@ public class User implements Serializable {
         return email;
     }
 
-    public Integer getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(Integer idUser) {
-        this.idUser = idUser;
-    }
-
     public UserType getUserType() {
         return userType;
     }
@@ -124,10 +116,34 @@ public class User implements Serializable {
         this.userType = userType;
     }
 
+    public Integer getId_user() {
+        return id_user;
+    }
+
+    public void setId_user(Integer id_user) {
+        this.id_user = id_user;
+    }
+
+    public String getConfirmPasswd() {
+        return ConfirmPasswd;
+    }
+
+    public void setConfirmPasswd(String ConfirmPasswd) {
+        this.ConfirmPasswd = ConfirmPasswd;
+    }
+
+    public String getPasswd() {
+        return passwd;
+    }
+
+    public void setPasswd(String passwd) {
+        this.passwd = passwd;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 67 * hash + Objects.hashCode(this.idUser);
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.id_user);
         return hash;
     }
 
@@ -143,7 +159,7 @@ public class User implements Serializable {
             return false;
         }
         final User other = (User) obj;
-        if (!Objects.equals(this.idUser, other.idUser)) {
+        if (!Objects.equals(this.id_user, other.id_user)) {
             return false;
         }
         return true;
@@ -151,7 +167,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" + "idUser=" + idUser + '}';
+        return "User{" + "id_user=" + id_user + '}';
     }
 
 }

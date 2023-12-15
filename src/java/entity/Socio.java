@@ -11,20 +11,27 @@ package entity;
  */
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
-@Table(name = "socio", schema = "LOLdb")
+//@Table(name = "socio", schema = "LOLdb")
+@DiscriminatorValue("SOCIO")
+@XmlRootElement
 public class Socio extends User {
 
+    
     private int Nivel_de_Socio;
     
-    @OneToMany(mappedBy = "socio")
-    private List<Sede> sede;
+    //@OneToMany(mappedBy = "socio")
+    //private List<Sede> sede;
     @OneToMany(mappedBy = "socio")
     private List<Evento> evento;
    
@@ -33,6 +40,7 @@ public class Socio extends User {
         this.evento = evento;
     }
 
+    @XmlTransient
     public List<Evento> getEvento() {
         return evento;
     }
@@ -44,15 +52,16 @@ public class Socio extends User {
     public void setNivel_de_Socio(int Nivel_de_Socio) {
         this.Nivel_de_Socio = Nivel_de_Socio;
     }
-
+/*
     public void setSede(List<Sede> sede) {
         this.sede = sede;
     }
 
+    @XmlTransient
     public List<Sede> getSede() {
         return sede;
     }
-
+*/
     @Override
     public int hashCode() {
         int hash = 3;

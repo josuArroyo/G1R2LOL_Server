@@ -26,6 +26,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "sede", schema = "LOLdb")
@@ -34,14 +35,15 @@ import javax.xml.bind.annotation.XmlRootElement;
             query = "SELECT s FROM Sede s ORDER BY s.id_sede")
     ,
 @NamedQuery(name = "findSeded",
-            query = "SELECT s FROM sede s where s.idSede= :idSede")
+            query = "SELECT s FROM Sede s where s.id_sede= :id_sede")
     ,
 
 @NamedQuery(name = "findSedeByCountry",
-            query = "SELECT s FROM sede s where s.pais= :pais")
+            query = "SELECT s FROM Sede s where s.pais= :pais")
     ,
 @NamedQuery(name = "findSedeAforoMax",
-            query = "SELECT s FROM sede s where s.aforoMax= :aforoMax")
+            query = "SELECT s FROM Sede s where s.aforoMax= :aforoMax")
+        
 })
 @XmlRootElement
 public class Sede implements Serializable {
@@ -65,7 +67,7 @@ public class Sede implements Serializable {
     private List<Evento> evento;
 
     @OneToMany(mappedBy = "sede")
-    private Voluntario voluntario;
+    private List<Voluntario> voluntario;
 
     public void setId_sede(Integer id_sede) {
         this.id_sede = id_sede;
@@ -115,6 +117,7 @@ public class Sede implements Serializable {
         this.aforoMax = aforoMax;
     }
 
+    @XmlTransient
     public List<Trabaja> getTrabaja() {
         return trabaja;
     }
@@ -127,17 +130,21 @@ public class Sede implements Serializable {
         this.evento = evento;
     }
 
+    @XmlTransient
     public List<Evento> getEvento() {
         return evento;
     }
 
-    public void setVoluntario(Voluntario voluntario) {
+    @XmlTransient
+    public List<Voluntario> getVoluntario() {
+        return voluntario;
+    }
+
+    public void setVoluntario(List<Voluntario> voluntario) {
         this.voluntario = voluntario;
     }
 
-    public Voluntario getVoluntario() {
-        return voluntario;
-    }
+   
 
     @Override
     public int hashCode() {
