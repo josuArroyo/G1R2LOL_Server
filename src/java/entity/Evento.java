@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "viewAllEvents", query = "SELECT e FROM Evento e ORDER BY e.id_evento")
     ,
-    @NamedQuery(name = "findEventByEventId", query = "SELECT e FROM Evento e WHERE e.id_evento = :idEvento")
+    @NamedQuery(name = "findEventByEventId", query = "SELECT e FROM Evento e WHERE e.id_evento = :id_evento")
     ,
     @NamedQuery(name = "findEventByAforo", query = "SELECT e FROM Evento e WHERE e.aforo = :aforo")
     ,
