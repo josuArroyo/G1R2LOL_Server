@@ -37,12 +37,13 @@ public class SedeEJB implements SedeInterface {
     }
 
     @Override
-    public void deleteSede(Integer id_sede) throws DeleteException {
+    public void deleteSede(Sede sede) throws DeleteException {
         try {
-            em.remove(em.merge(id_sede));
+            em.remove(em.merge(sede));
         } catch (Exception e) {
             throw new DeleteException(e.getMessage());
         }
+
     }
 
     @Override
@@ -67,14 +68,15 @@ public class SedeEJB implements SedeInterface {
     }
 
     @Override
-    public List<Sede> viewSedeById(Integer id_sede) throws ReadException {
-        List<Sede> sede = null;
+    public Sede viewSedeById(Integer id_sede) throws ReadException {
+        Sede sede;
         try {
-            sede = em.createNamedQuery("findSeded").setParameter("id_sede", id_sede).getResultList();
+            sede = em.find(Sede.class, id_sede);
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }
         return sede;
+
     }
 
     @Override

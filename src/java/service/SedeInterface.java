@@ -20,13 +20,13 @@ public interface SedeInterface {
 
     public List<Sede> viewSedes() throws ReadException;
 
-    public void deleteSede(Integer id_sede) throws DeleteException;
+    public void deleteSede(Sede sede) throws DeleteException;
 
     public void createSede(Sede sede) throws CreateException;
 
     public void modifySede(Sede sede) throws UpdateException;
 
-    public List<Sede> viewSedeById(Integer id_sede) throws ReadException;
+    public Sede viewSedeById(Integer id_sede) throws ReadException;
 
     public List<Sede> viewSedeByCountry(Integer id_sede) throws ReadException;
 

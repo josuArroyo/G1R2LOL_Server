@@ -11,6 +11,8 @@ import exception.DeleteException;
 import exception.ReadException;
 import exception.UpdateException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -30,7 +32,6 @@ import javax.ws.rs.core.MediaType;
  *
  * @author 2dam
  */
-@Stateless
 @Path("entity.sede")
 public class SedeFacadeREST {
 
@@ -56,7 +57,7 @@ public class SedeFacadeREST {
 
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void modifySede(@PathParam("id_sede") Integer id, Sede sede) {
+    public void modifySede(@PathParam("id_sede") Integer id_sede, Sede sede) {
         try {
             inter.modifySede(sede);
         } catch (UpdateException e) {
@@ -69,9 +70,11 @@ public class SedeFacadeREST {
     @Path("DELETE-Sede/{id_sede}")
     public void deleteSede(@PathParam("id_sede") Integer id_sede) {
         try {
-            inter.deleteSede(id_sede);
+            inter.deleteSede(inter.viewSedeById(id_sede));
         } catch (DeleteException e) {
             throw new InternalServerErrorException(e.getMessage());
+        } catch (ReadException ex) {
+            Logger.getLogger(SedeFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
