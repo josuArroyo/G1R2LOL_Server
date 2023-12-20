@@ -110,6 +110,17 @@ public class SedeFacadeREST {
         }
     }
 
+    @GET
+    @Path("ViewSedeById/{id_sede}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Sede viewSedeById(@PathParam("id_sede") Integer id_sede) {
+        try {
+            return inter.viewSedeById(id_sede);
+        } catch (ReadException ex) {
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
     protected EntityManager getEntityManager() {
         return em;
     }
