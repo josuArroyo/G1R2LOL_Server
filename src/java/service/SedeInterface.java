@@ -28,7 +28,8 @@ public interface SedeInterface {
 
     public Sede viewSedeById(Integer id_sede) throws ReadException;
 
-    public List<Sede> viewSedeByCountry(Integer id_sede) throws ReadException;
+    public List<Sede> viewSedeByCountry(String pais) throws ReadException;
 
-    public List<Sede> viewSedeAforoMax(Integer id_sede) throws ReadException;
+    public List<Sede> viewSedeAforoMax(Integer aforoMax) throws ReadException;
+
 }

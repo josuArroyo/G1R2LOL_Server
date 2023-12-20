@@ -80,10 +80,10 @@ public class SedeEJB implements SedeInterface {
     }
 
     @Override
-    public List<Sede> viewSedeByCountry(Integer id_sede) throws ReadException {
+    public List<Sede> viewSedeByCountry(String pais) throws ReadException {
         List<Sede> sede = null;
         try {
-            sede = em.createNamedQuery("findSedeByCountry").setParameter("id_sede", id_sede).getResultList();
+            sede = em.createNamedQuery("findSedeByCountry").setParameter("pais", pais).getResultList();
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }
@@ -91,10 +91,10 @@ public class SedeEJB implements SedeInterface {
     }
 
     @Override
-    public List<Sede> viewSedeAforoMax(Integer id_sede) throws ReadException {
+    public List<Sede> viewSedeAforoMax(Integer aforoMax) throws ReadException {
         List<Sede> sede = null;
         try {
-            sede = em.createNamedQuery("findSedeAforoMax").setParameter("id_sede", id_sede).getResultList();
+            sede = em.createNamedQuery("findSedeAforoMax").setParameter("aforoMax", aforoMax).getResultList();
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }

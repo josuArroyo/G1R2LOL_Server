@@ -72,9 +72,9 @@ public class SedeFacadeREST {
         try {
             inter.deleteSede(inter.viewSedeById(id_sede));
         } catch (DeleteException e) {
-            throw new InternalServerErrorException(e.getMessage());
+
         } catch (ReadException ex) {
-            Logger.getLogger(SedeFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
 
@@ -85,6 +85,28 @@ public class SedeFacadeREST {
             return inter.viewSedes();
         } catch (ReadException e) {
             throw new InternalServerErrorException(e.getMessage());
+        }
+    }
+
+    @GET
+    @Path("ViewSedeBy/String/{pais}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Sede> viewSedeByCountry(@PathParam("pais") String pais) {
+        try {
+            return inter.viewSedeByCountry(pais);
+        } catch (ReadException e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
+    }
+
+    @GET
+    @Path("ViewSedeByAforoMax/{aforoMax}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Sede> viewSedeByAforoMax(@PathParam("aforoMax") Integer aforoMax) {
+        try {
+            return inter.viewSedeAforoMax(aforoMax);
+        } catch (ReadException ex) {
+            throw new InternalServerErrorException(ex.getMessage());
         }
     }
 
