@@ -98,6 +98,18 @@ public class EventoFacadeREST {
             throw new InternalServerErrorException(e.getMessage());
         }
     }
+    
+    @GET
+    @Path("ViewEventByAforo/{aforo}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Evento> viewSedeByAforoMax(@PathParam("aforo") Integer aforo) {
+        try {
+            return inter.viewEventoAforoMax(aforo);
+        } catch (ReadException ex) {
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
 
   
 

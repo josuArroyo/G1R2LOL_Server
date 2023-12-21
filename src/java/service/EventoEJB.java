@@ -91,4 +91,16 @@ public class EventoEJB implements EventoInterface {
         return events;
     }
 
+    @Override
+    public List<Evento> viewEventoAforoMax(Integer aforo) throws ReadException {
+        List<Evento> evento ;
+        try {
+            evento = em.createNamedQuery("findEventByAforo").setParameter("aforo", aforo).getResultList();
+        } catch (Exception e) {
+            throw new ReadException(e.getMessage());
+        }
+        return evento;
+    
+    }
+
 }

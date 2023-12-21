@@ -24,6 +24,7 @@ public List<Evento> viewEvents() throws ReadException;
 public void createEvent(Evento event) throws CreateException;
 public void modifyEvent(Evento event) throws UpdateException;
 public List<Evento> findEventByEventId(Integer id_evento) throws ReadException;
+public List<Evento> viewEventoAforoMax(Integer aforo) throws ReadException;
     
     
 }
