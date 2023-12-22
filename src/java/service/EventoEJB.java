@@ -6,6 +6,7 @@
 package service;
 
 import entity.Evento;
+import entity.Patrocinador;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
@@ -118,4 +119,18 @@ public class EventoEJB implements EventoInterface {
         return evento;
     }
 
+    /*
+    @Override
+    public List<Evento> viewEventoByPatrocinador(Patrocinador patrocinador) throws ReadException {
+       List<Evento> evento;
+       
+        try {
+            evento= em.createNamedQuery("findEventByPatrocinador").setParameter("patrocinador", patrocinador).getResultList();
+        } catch (Exception e) {
+            throw new ReadException(e.getMessage());
+        }
+        return evento;
+        
+    }
+*/
 }

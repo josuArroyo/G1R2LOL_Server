@@ -6,6 +6,7 @@
 package service;
 
 import entity.Evento;
+import entity.Patrocinador;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
@@ -100,7 +101,7 @@ public class EventoFacadeREST {
             throw new InternalServerErrorException(e.getMessage());
         }
     }
-    
+
     @GET
     @Path("ViewEventByAforo/{aforo}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -111,26 +112,34 @@ public class EventoFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-    
+
     @GET
     @Path("viewEventByDate/{fechaEvento}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Evento> viewEventoByDate(@PathParam("fechaEvento") String fechaEvento){
-        
+    public List<Evento> viewEventoByDate(@PathParam("fechaEvento") String fechaEvento) {
+
         try {
             SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
             Date date = formateador.parse(fechaEvento);
             return inter.viewEventoByDate(date);
-            
+
         } catch (Exception e) {
             throw new InternalServerErrorException(e.getMessage());
         }
-        
-        
+
     }
-
-  
-
+/*
+    @GET
+    @Path("ViewEventByPatrocinador/{patrocinador}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Evento> viewEventoByPatrocinador(@PathParam("patrocinador") Patrocinador patrocinador) {
+        try {
+            return inter.viewEventoByPatrocinador(patrocinador);
+        } catch (ReadException ex) {
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+*/
     protected EntityManager getEntityManager() {
         return em;
     }

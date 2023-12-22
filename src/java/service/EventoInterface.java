@@ -6,6 +6,7 @@
 package service;
 
 import entity.Evento;
+import entity.Patrocinador;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
@@ -27,6 +28,7 @@ public void modifyEvent(Evento event) throws UpdateException;
 public List<Evento> findEventByEventId(Integer id_evento) throws ReadException;
 public List<Evento> viewEventoAforoMax(Integer aforo) throws ReadException;
 public List<Evento> viewEventoByDate (Date fechaEvento) throws ReadException;
+//public List<Patrocinador> viewEventoByPatrocinador (Evento event)throws ReadException;
     
     
 }
