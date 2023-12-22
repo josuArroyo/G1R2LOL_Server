@@ -43,6 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQuery(name = "findSedeByCountry",
             query = "SELECT s FROM Sede s where s.pais= :pais")
     ,
+@NamedQuery(name = "findEventBySede",
+            query = "SELECT e FROM Evento e WHERE e.sede = :sede")
+    ,
 @NamedQuery(name = "findSedeAforoMax",
             query = "SELECT s FROM Sede s where s.aforoMax= :aforoMax")
 

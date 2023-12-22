@@ -5,7 +5,9 @@
  */
 package service;
 
+import entity.Evento;
 import entity.Sede;
+import entity.User;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;

@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "findUserByEmailAndPasswd",
-            query = "SELECT u FROM User u where email = :email and passwd = passwd"
+            query = "SELECT u FROM User u where email = :email and passwd = :passwd"
     )
     ,
 @NamedQuery(name = "findForUserType",
@@ -41,7 +41,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     )
     ,
 @NamedQuery(name = "findForUserName",
-            query = "SELECT p FROM Patrocinador p where nombre = :nombre"
+            query = "SELECT u FROM User u where nombre = :nombre"
+    )
+    ,
+
+@NamedQuery(name = "findAllUser",
+            query = "SELECT u FROM User u ORDER BY u.id_user"
     )
 })
 @DiscriminatorColumn(name = "userType", discriminatorType = DiscriminatorType.STRING)

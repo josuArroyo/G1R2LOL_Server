@@ -39,8 +39,6 @@ import javax.xml.bind.annotation.XmlTransient;
     ,
     @NamedQuery(name = "findEventByDate", query = "SELECT e FROM Evento e WHERE e.fechaEvento = :fechaEvento")
     ,    
-    @NamedQuery(name = "findEventBySede", query = "SELECT e FROM Evento e WHERE e.sede = :sede")
-    ,    
     @NamedQuery(name = "findEventByPatrocinador", query = "SELECT e FROM Evento e WHERE e.patrocinador = :patrocinador")
 })
 
@@ -135,7 +133,7 @@ public class Evento implements Serializable {
         return socio;
     }
 
-    public void setSocio(Socio socio) {                                                                         
+    public void setSocio(Socio socio) {
         this.socio = socio;
     }
 
@@ -177,7 +175,5 @@ public class Evento implements Serializable {
     public String toString() {
         return "Evento{" + "id_evento=" + id_evento + '}';
     }
-
-    
 
 }
