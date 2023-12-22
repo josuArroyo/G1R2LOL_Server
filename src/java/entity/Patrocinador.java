@@ -5,6 +5,8 @@
  */
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -28,22 +30,25 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "patrocinador", schema = "LOLdb")
 @NamedQueries({
-    @NamedQuery(name = "findAllPatrocinador",
+    @NamedQuery(name = "findAllPatrocinadores",
             query = "SELECT p FROM Patrocinador p"
     )
     ,
 @NamedQuery(name = "findForDuration",
-            query = "SELECT p FROM Patrocinador p where duracion = :duracion"
+            query = "SELECT p FROM Patrocinador p where DuracionPatrocinio = :DuracionPatrocinio"
     )
     ,
 @NamedQuery(name = "findForName",
             query = "SELECT p FROM Patrocinador p where nombre = :nombre"
-    
     )
-           ,
-@NamedQuery(name = "findForEvento",
-            query = "SELECT p FROM Patrocinador p where evento = :evento"
-)
+    ,
+//@NamedQuery(name = "findForEvento",
+      //      query = "SELECT p FROM Patrocinador p where evento = :evento"
+    //)
+   // ,
+@NamedQuery(name = "viewPatrocinadorById",
+            query = "SELECT p FROM Patrocinador p where id_Patrocinador = :id_Patrocinador"
+    )
 })
 @XmlRootElement
 public class Patrocinador implements Serializable {
@@ -51,11 +56,13 @@ public class Patrocinador implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id_Patrocinador;
-    private String Nombre;
+    private String nombre;
     private String Descripcion;
     private String email;
     private Integer telefono;
     @Temporal(TemporalType.DATE)
+    @JsonSerialize(as = Date.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date DuracionPatrocinio;
 
     @ManyToMany(mappedBy = "patrocinador")
@@ -69,12 +76,12 @@ public class Patrocinador implements Serializable {
         return id_Patrocinador;
     }
 
-    public void setNombre(String Nombre) {
-        this.Nombre = Nombre;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
     public void setDescripcion(String Descripcion) {
