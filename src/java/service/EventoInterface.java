@@ -10,6 +10,7 @@ import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
 import exception.UpdateException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +26,7 @@ public void createEvent(Evento event) throws CreateException;
 public void modifyEvent(Evento event) throws UpdateException;
 public List<Evento> findEventByEventId(Integer id_evento) throws ReadException;
 public List<Evento> viewEventoAforoMax(Integer aforo) throws ReadException;
+public List<Evento> viewEventoByDate (Date fechaEvento) throws ReadException;
     
     
 }

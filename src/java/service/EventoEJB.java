@@ -10,6 +10,7 @@ import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
 import exception.UpdateException;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -93,14 +94,28 @@ public class EventoEJB implements EventoInterface {
 
     @Override
     public List<Evento> viewEventoAforoMax(Integer aforo) throws ReadException {
-        List<Evento> evento ;
+        List<Evento> evento;
         try {
             evento = em.createNamedQuery("findEventByAforo").setParameter("aforo", aforo).getResultList();
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }
         return evento;
-    
+
+    }
+
+    @Override
+    public List<Evento> viewEventoByDate(Date fechaEvento) throws ReadException {
+
+        List<Evento> evento;
+        
+        try {
+            evento = em.createNamedQuery("findEventByDate").setParameter("fechaEvento", fechaEvento).getResultList();
+        } catch (Exception e) {
+            throw new ReadException(e.getMessage());
+
+        }
+        return evento;
     }
 
 }

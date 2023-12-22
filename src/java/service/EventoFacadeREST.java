@@ -10,6 +10,8 @@ import exception.CreateException;
 import exception.DeleteException;
 import exception.ReadException;
 import exception.UpdateException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -109,7 +111,23 @@ public class EventoFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    
+    @GET
+    @Path("viewEventByDate/{fechaEvento}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Evento> viewEventoByDate(@PathParam("fechaEvento") String fechaEvento){
+        
+        try {
+            SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = formateador.parse(fechaEvento);
+            return inter.viewEventoByDate(date);
+            
+        } catch (Exception e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
+        
+        
+    }
 
   
 
