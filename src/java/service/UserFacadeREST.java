@@ -6,7 +6,10 @@
 package service;
 
 import entity.User;
+import entity.UserType;
+import exception.ReadException;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,6 +33,9 @@ public class UserFacadeREST extends AbstractFacade<User> {
 
     @PersistenceContext(unitName = "G1R2LOL_ServerPU")
     private EntityManager em;
+
+    @EJB
+    private UserInterface inter;
 
     public UserFacadeREST() {
         super(User.class);
@@ -83,9 +89,32 @@ public class UserFacadeREST extends AbstractFacade<User> {
         return String.valueOf(super.count());
     }
 
+    @GET
+    @Path("findUserByEmailAndPasswd/{email}/{passwd}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<User> findUserByEmailAndPasswd(@PathParam("email") String email, @PathParam("passwd") String passwd) throws ReadException {
+        try {
+            return inter.findUserByEmailAndPasswd(email, passwd);
+        } catch (Exception e) {
+            throw new ReadException(e.getMessage());
+        }
+    }
+
+    @GET
+    @Path("findForUserType/{userType}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<User> findForUserType(@PathParam("userType") UserType userType) throws ReadException {
+        try {
+            return inter.findForUserType(userType);
+        } catch (Exception e) {
+            throw new ReadException(e.getMessage());
+        }
+    }
+
     @Override
+
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

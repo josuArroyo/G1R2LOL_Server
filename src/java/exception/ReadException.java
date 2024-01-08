@@ -5,17 +5,16 @@
  */
 package exception;
 
+import javax.persistence.PersistenceException;
+
 /**
  *
  * @author Eneko.
  */
 public class ReadException extends Exception {
 
-    public ReadException() {
-
-    }
-
     public ReadException(String msg) {
         super(msg);
     }
+
 }
