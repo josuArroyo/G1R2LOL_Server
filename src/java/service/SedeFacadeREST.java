@@ -5,14 +5,23 @@
  */
 package service;
 
+import entity.Evento;
 import entity.Sede;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.ReadException;
+import exception.UpdateException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -24,68 +33,97 @@ import javax.ws.rs.core.MediaType;
  *
  * @author 2dam
  */
-@Stateless
 @Path("entity.sede")
-public class SedeFacadeREST extends AbstractFacade<Sede> {
+public class SedeFacadeREST {
 
     @PersistenceContext(unitName = "G1R2LOL_ServerPU")
     private EntityManager em;
 
+    @EJB
+    private SedeInterface inter;
+
     public SedeFacadeREST() {
-        super(Sede.class);
+
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Sede entity) {
-        super.create(entity);
+    public void createSede(@PathParam("id_sede") Integer id_sede, Sede sede) {
+        try {
+            inter.createSede(sede);
+        } catch (CreateException e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
     }
 
     @PUT
-    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Sede entity) {
-        super.edit(entity);
+    public void modifySede(@PathParam("id_sede") Integer id_sede, Sede sede) {
+        try {
+            inter.modifySede(sede);
+        } catch (UpdateException e) {
+            System.out.println(e);
+            throw new InternalServerErrorException(e.getMessage());
+        }
     }
 
     @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+    @Path("DELETE-Sede/{id_sede}")
+    public void deleteSede(@PathParam("id_sede") Integer id_sede) {
+        try {
+            inter.deleteSede(inter.viewSedeById(id_sede));
+        } catch (DeleteException e) {
+
+        } catch (ReadException ex) {
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @GET
-    @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Sede find(@PathParam("id") Integer id) {
-        return super.find(id);
+    public List<Sede> viewSedes() {
+        try {
+            return inter.viewSedes();
+        } catch (ReadException e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
     }
 
     @GET
-    @Override
+    @Path("ViewSedeBy/String/{pais}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Sede> findAll() {
-        return super.findAll();
+    public List<Sede> viewSedeByCountry(@PathParam("pais") String pais) {
+        try {
+            return inter.viewSedeByCountry(pais);
+        } catch (ReadException e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
     }
 
     @GET
-    @Path("{from}/{to}")
+    @Path("ViewSedeByAforoMax/{aforoMax}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Sede> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
+    public List<Sede> viewSedeByAforoMax(@PathParam("aforoMax") Integer aforoMax) {
+        try {
+            return inter.viewSedeAforoMax(aforoMax);
+        } catch (ReadException ex) {
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
+    @Path("ViewSedeById/{id_sede}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Sede viewSedeById(@PathParam("id_sede") Integer id_sede) {
+        try {
+            return inter.viewSedeById(id_sede);
+        } catch (ReadException ex) {
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
-    @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

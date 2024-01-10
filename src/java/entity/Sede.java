@@ -9,6 +9,8 @@ package entity;
  *
  * @author Eneko.
  */
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
@@ -41,9 +43,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQuery(name = "findSedeByCountry",
             query = "SELECT s FROM Sede s where s.pais= :pais")
     ,
+@NamedQuery(name = "findEventBySede",
+            query = "SELECT e FROM Evento e WHERE e.sede = :sede")
+    ,
 @NamedQuery(name = "findSedeAforoMax",
             query = "SELECT s FROM Sede s where s.aforoMax= :aforoMax")
-        
+
 })
 @XmlRootElement
 public class Sede implements Serializable {
@@ -51,10 +56,12 @@ public class Sede implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id_sede;
-    
+
     @Temporal(TemporalType.DATE)
+    @JsonSerialize(as = Date.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Date finDeContrato;
-    
+
     private String pais;
     private Integer aforoMax;
     private Integer numVolMax;
@@ -62,7 +69,7 @@ public class Sede implements Serializable {
 
     @OneToMany(mappedBy = "sede")
     private List<Trabaja> trabaja;
-    
+
     @OneToMany(mappedBy = "sede")
     private List<Evento> evento;
 
@@ -143,8 +150,6 @@ public class Sede implements Serializable {
     public void setVoluntario(List<Voluntario> voluntario) {
         this.voluntario = voluntario;
     }
-
-   
 
     @Override
     public int hashCode() {

@@ -5,6 +5,8 @@
  */
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -33,15 +35,15 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "viewAllEvents", query = "SELECT e FROM Evento e ORDER BY e.id_evento")
     ,
-    @NamedQuery(name = "findEventByEventId", query = "SELECT e FROM Evento e WHERE e.id_evento = :idEvento")
+    @NamedQuery(name = "findEventByEventId", query = "SELECT e FROM Evento e WHERE e.id_evento = :id_evento")
     ,
     @NamedQuery(name = "findEventByAforo", query = "SELECT e FROM Evento e WHERE e.aforo = :aforo")
     ,
     @NamedQuery(name = "findEventByDate", query = "SELECT e FROM Evento e WHERE e.fechaEvento = :fechaEvento")
     ,    
-    @NamedQuery(name = "findEventBySede", query = "SELECT e FROM Evento e WHERE e.sede = :sede")
+    @NamedQuery(name = "findEventBySedes", query = "SELECT e FROM Evento e WHERE e.sede = :sede")
     ,    
-    @NamedQuery(name = "findEventByPatrocinador", query = "SELECT e FROM Evento e WHERE e.patrocinador = :patrocinador")
+   // @NamedQuery(name = "findEventByPatrocinador", query = "SELECT p FROM Patrocinador p WHERE (SELECT evento_id_evento FROM evento_patrocinador ) = (SELECT e from Evento e")
 })
 
 @XmlRootElement
@@ -56,6 +58,8 @@ public class Evento implements Serializable {
     private String nombre;
 
     @Temporal(TemporalType.DATE)
+    @JsonSerialize(as = Date.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Date fechaEvento;
 
     private String descripcion;
@@ -135,7 +139,7 @@ public class Evento implements Serializable {
         return socio;
     }
 
-    public void setSocio(Socio socio) {                                                                         
+    public void setSocio(Socio socio) {
         this.socio = socio;
     }
 
@@ -177,7 +181,5 @@ public class Evento implements Serializable {
     public String toString() {
         return "Evento{" + "id_evento=" + id_evento + '}';
     }
-
-    
 
 }
