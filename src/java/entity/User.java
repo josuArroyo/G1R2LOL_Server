@@ -49,7 +49,7 @@ import javax.xml.bind.annotation.XmlRootElement;
             query = "SELECT u FROM User u ORDER BY u.id_user"
     )
 })
-@DiscriminatorColumn(name = "userType", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "UserType", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "user", schema = "LOLdb")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @XmlRootElement
@@ -70,7 +70,7 @@ public class User implements Serializable {
     private String ConfirmPasswd;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "userType", insertable = false, updatable = false)
+    @Column(name = "UserType", insertable = false, updatable = false)
     private UserType userType;
 
     public void setDNI(String DNI) {

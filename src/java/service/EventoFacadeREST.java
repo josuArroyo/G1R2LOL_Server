@@ -128,18 +128,21 @@ public class EventoFacadeREST {
         }
 
     }
-/*
+
     @GET
-    @Path("ViewEventByPatrocinador/{patrocinador}")
+    @Path("getPatrocinadorByEvento/{id_evento}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Evento> viewEventoByPatrocinador(@PathParam("patrocinador") Patrocinador patrocinador) {
+    public List<Patrocinador> findPatrocinadoresByEvento(@PathParam("id_evento") Integer id_evento) {
+        List<Patrocinador> lista;
         try {
-            return inter.viewEventoByPatrocinador(patrocinador);
+            lista = inter.viewEventoByPatrocinador(id_evento);
+            return lista;
         } catch (ReadException ex) {
+            System.out.println(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-*/
+
     protected EntityManager getEntityManager() {
         return em;
     }

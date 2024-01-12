@@ -42,8 +42,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "findEventByDate", query = "SELECT e FROM Evento e WHERE e.fechaEvento = :fechaEvento")
     ,    
     @NamedQuery(name = "findEventBySedes", query = "SELECT e FROM Evento e WHERE e.sede = :sede")
-    ,    
-   // @NamedQuery(name = "findEventByPatrocinador", query = "SELECT p FROM Patrocinador p WHERE (SELECT evento_id_evento FROM evento_patrocinador ) = (SELECT e from Evento e")
+    , 
+   // @NamedQuery(name = "findEventByPatrocinador", query = "SELECT p FROM Evento p WHERE p.patrocinador = patrocinador")
+    @NamedQuery(
+    name = "findPatrocinadoresByEvento",
+    query = "SELECT p FROM Evento e JOIN e.patrocinador p WHERE e.id_evento = :id_evento"
+)
 })
 
 @XmlRootElement
