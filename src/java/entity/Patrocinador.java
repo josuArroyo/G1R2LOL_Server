@@ -10,10 +10,14 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -49,6 +53,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQuery(name = "viewPatrocinadorById",
             query = "SELECT p FROM Patrocinador p where id_Patrocinador = :id_Patrocinador"
     )
+    ,
+@NamedQuery(
+            name = "findEventosByPatrocinador",
+            query = "SELECT e FROM Evento e JOIN e.patrocinador p WHERE p.id_Patrocinador = :id_patrocinador"
+    )
+
 })
 @XmlRootElement
 public class Patrocinador implements Serializable {
@@ -66,7 +76,7 @@ public class Patrocinador implements Serializable {
     private Date DuracionPatrocinio;
 
     @ManyToMany(mappedBy = "patrocinador")
-    private List<Evento> evento;
+    private Set<Evento> evento;
 
     public void setId_Patrocinador(Integer id_Patrocinador) {
         this.id_Patrocinador = id_Patrocinador;
@@ -116,12 +126,12 @@ public class Patrocinador implements Serializable {
         return DuracionPatrocinio;
     }
 
-    public void setEvento(List<Evento> evento) {
+    public void setEvento(Set<Evento> evento) {
         this.evento = evento;
     }
 
     @XmlTransient
-    public List<Evento> getEvento() {
+    public Set<Evento> getEvento() {
         return evento;
     }
 

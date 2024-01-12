@@ -5,6 +5,7 @@
  */
 package service;
 
+import entity.Evento;
 import entity.Patrocinador;
 import exception.CreateException;
 import exception.DeleteException;
@@ -32,4 +33,8 @@ public interface PatrocinadorInterface {
     public List <Patrocinador> viewPatrocinadorByDuration(Date duracion) throws ReadException; 
 
     public Patrocinador viewPatrocinadorById(Integer id_patrocinador) throws ReadException;
+    
+    List<Evento> viewEventosByPatrocinador(Integer id_patrocinador) throws ReadException;
+
+
 }
