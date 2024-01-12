@@ -6,7 +6,6 @@
 package service;
 
 import entity.Evento;
-import static entity.Evento_.patrocinador;
 import entity.Patrocinador;
 import exception.CreateException;
 import exception.DeleteException;
@@ -123,7 +122,7 @@ public class EventoEJB implements EventoInterface {
     /*
     @Override
     public List<Evento> viewEventoByPatrocinador(Integer id_evento) throws ReadException {
-         
+
         List <Evento> list;
         try{
             list = em.createNamedQuery("findPatrocinadoresByEvento").setParameter("id_evento", em.find(Evento.class, patrocinador)).getResultList();
