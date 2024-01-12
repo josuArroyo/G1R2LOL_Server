@@ -31,6 +31,10 @@ public class Voluntario extends User {
         return sede;
     }
 
+    public int getNumero_Voluntariados() {
+        return numero_Voluntariados;
+    }
+
     public void setSede(Sede sede) {
         this.sede = sede;
     }

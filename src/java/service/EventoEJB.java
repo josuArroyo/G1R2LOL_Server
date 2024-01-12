@@ -6,6 +6,7 @@
 package service;
 
 import entity.Evento;
+import static entity.Evento_.patrocinador;
 import entity.Patrocinador;
 import exception.CreateException;
 import exception.DeleteException;
@@ -109,7 +110,7 @@ public class EventoEJB implements EventoInterface {
     public List<Evento> viewEventoByDate(Date fechaEvento) throws ReadException {
 
         List<Evento> evento;
-        
+
         try {
             evento = em.createNamedQuery("findEventByDate").setParameter("fechaEvento", fechaEvento).getResultList();
         } catch (Exception e) {
@@ -121,16 +122,28 @@ public class EventoEJB implements EventoInterface {
 
     /*
     @Override
-    public List<Evento> viewEventoByPatrocinador(Patrocinador patrocinador) throws ReadException {
-       List<Evento> evento;
-       
+    public List<Evento> viewEventoByPatrocinador(Integer id_evento) throws ReadException {
+         
+        List <Evento> list;
+        try{
+            list = em.createNamedQuery("findPatrocinadoresByEvento").setParameter("id_evento", em.find(Evento.class, patrocinador)).getResultList();
+        }catch (Exception e){
+            throw new ReadException(e.getMessage());
+        }
+        return list;
+    }
+     */
+    @Override
+    public List<Patrocinador> viewEventoByPatrocinador(Integer id_evento) throws ReadException {
+        List<Patrocinador> list;
         try {
-            evento= em.createNamedQuery("findEventByPatrocinador").setParameter("patrocinador", patrocinador).getResultList();
+            list = em.createNamedQuery("findPatrocinadoresByEvento", Patrocinador.class)
+                    .setParameter("id_evento", id_evento)
+                    .getResultList();
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }
-        return evento;
-        
+        return list;
     }
-*/
+
 }
