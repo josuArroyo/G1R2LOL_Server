@@ -5,8 +5,11 @@
  */
 package service;
 
+import cipher.HashContra;
+import cipher.mailCypher;
 import entity.Voluntario;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,6 +22,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -30,7 +34,13 @@ public class VoluntarioFacadeREST extends AbstractFacade<Voluntario> {
 
     @PersistenceContext(unitName = "G1R2LOL_ServerPU")
     private EntityManager em;
-
+    
+    
+    
+    @EJB
+    private VoluntarioInterface inter;
+    
+    
     public VoluntarioFacadeREST() {
         super(Voluntario.class);
     }
@@ -82,7 +92,27 @@ public class VoluntarioFacadeREST extends AbstractFacade<Voluntario> {
     public String countREST() {
         return String.valueOf(super.count());
     }
+    
+    
+    private AbstractFacade abs;
+    
+    @POST
+    @Path("/recuperarContra")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response recuperarContra(Voluntario volun) {
+        try {
+            inter.recuperarContra(volun);
+            return Response.status(Response.Status.OK).entity("Contraseña recuperada exitosamente.").build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Error al recuperar la contraseña.").build();
+        }
+    }
 
+    private String generarNuevaContrasena(String email) {
+        // Lógica para generar y enviar una nueva contraseña por correo
+        mailCypher emailCypher = new mailCypher();
+        return emailCypher.sendEmail(email);
+    }
     @Override
     protected EntityManager getEntityManager() {
         return em;
