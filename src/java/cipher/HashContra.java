@@ -20,15 +20,15 @@ public class HashContra {
         String mensaje = null;
 
         try {
-            // Obtén una instancia de MessageDigest que usa SHA
+
             messageDigest = MessageDigest.getInstance(encriptacion);
-            // Actualiza el MessageDigest con el array de bytes             
+
             messageDigest.update(texto);
-            // Calcula el resumen (función digest)
+
             byte[] digest = messageDigest.digest();
-            //mensaje = hexadecimal(digest);
+
         } catch (NoSuchAlgorithmException e) {
-            
+
         }
         return mensaje;
     }

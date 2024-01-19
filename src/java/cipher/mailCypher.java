@@ -40,28 +40,24 @@ public class mailCypher {
 
     static String sSalt = "Mensaje super secreto";
     private static byte[] salt = sSalt.getBytes();
+    Integer caracteresMinimos = 8;
     String user = null;
     String emailKey = null;
-
+    Simetric sim;
     public String sendEmail(String emailUser) {
-        final ResourceBundle bundle = ResourceBundle.getBundle("credential.properties");
+        //final ResourceBundle bundle = ResourceBundle.getBundle("cipher.credential");
 
-        final String cyperuser = bundle.getString("EMAILCIFRADO");
-        final String cyperemailKey = bundle.getString("CONTRACIFRADA");
+       
         final String ZOHO_HOST = "smtp.zoho.eu";
         final String TLS_PORT = "897";
         final String SENDER_USERNAME = "pruebacorreog1@zohomail.eu";
         final String SENDER_PASSWORD = "MiPatataSagrada123";
 
-        try {
-            user = descifrarTexto("Clave", "user");
-            emailKey = descifrarTexto("Clave", "key");
-        } catch (IOException ex) {
-            Logger.getLogger(mailCypher.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        user = sim.descifrarTexto("Clave", "user");
+        emailKey = sim.descifrarTexto("Clave", "key");
 
         final String recibido = emailUser;
-        final String nuevaContra = generateRandomPassword(Integer.parseInt(bundle.getString("MINIMOCONTRASEÑA")));
+        final String nuevaContra = generateRandomPassword(caracteresMinimos);
 
         Properties props = System.getProperties();
         props.setProperty("mail.smtps.host", ZOHO_HOST);
@@ -89,15 +85,15 @@ public class mailCypher {
                     + "\n"
                     + "Esperamos que te encuentres bien. Nos dirigimos a ti para informarte que hemos recibido una solicitud de recuperación de contraseña para tu cuenta.\n"
                     + "\n"
-                    + "Aquí está tu nueva contraseña temporal: [Nueva Contraseña]. Por motivos de seguridad, te recomendamos cambiar esta contraseña en cuanto inicies sesión en tu cuenta.\n"
+                    + "Aquí está tu nueva contraseña temporal: "+ nuevaContra +" Por motivos de seguridad, te recomendamos cambiar esta contraseña en cuanto inicies sesión en tu cuenta.\n"
                     + "\n"
                     + "Si no has realizado esta solicitud o necesitas ayuda, por favor, ponte en contacto con nosotros respondiendo a este correo. Estamos aquí para garantizar que recuperes el acceso a tu cuenta de manera segura.\n"
                     + "\n"
                     + "¡Gracias por confiar en nosotros!\n"
                     + "\n"
                     + "Saludos cordiales,\n"
-                    + "[Nombre de tu Empresa o Servicio]\n"
-                    + "[Información de Contacto]\n");
+                    + "LOL\n"
+                    + "pruebacorreog1@zohomail.eu\n");
             msg.setSentDate(new Date());
 
             Transport transport = session.getTransport("smtps");
@@ -113,57 +109,6 @@ public class mailCypher {
         return nuevaContra;
     }
 
-    public String descifrarTexto(String clave, String mensajeCyper) throws IOException {
-        String ret = null;
-        byte[] fileContent = null;
-
-        if (mensajeCyper.equals("user")) {
-
-            InputStream is = getClass().getResourceAsStream("email.dat");
-            fileContent = new byte[is.available()];
-            is.read(fileContent, 0, is.available());
-        } else {
-            InputStream is = getClass().getResourceAsStream("key.dat");
-            fileContent = new byte[is.available()];
-            is.read(fileContent, 0, is.available());
-        }
-
-        // Fichero leído
-        KeySpec keySpec = null;
-        SecretKeyFactory secretKeyFactory = null;
-
-        try {
-            // Obtenemos el keySpec
-            keySpec = new PBEKeySpec(clave.toCharArray(), salt, 65536, 128); // AES-128
-
-            // Obtenemos una instancide de SecretKeyFactory con el algoritmo "PBKDF2WithHmacSHA1"
-            secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            // Generamos la clave
-            byte[] key = secretKeyFactory.generateSecret(keySpec).getEncoded();
-
-            // Creamos un SecretKey usando la clave + salt
-            SecretKey privateKey = new SecretKeySpec(key, 0, key.length, "AES");// AES;
-
-            // Obtenemos una instancide de Cipher con el algoritmos que vamos a usar "AES/CBC/PKCS5Padding"
-            // Iniciamos el Cipher en ENCRYPT_MODE y le pasamos la clave privada
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-
-            // Leemos el fichero codificado 
-            IvParameterSpec ivParam = new IvParameterSpec(Arrays.copyOfRange(fileContent, 0, 16));
-
-            // Iniciamos el Cipher en ENCRYPT_MODE y le pasamos la clave privada y el ivParam
-            cipher.init(Cipher.DECRYPT_MODE, privateKey, ivParam);
-            // Le decimos que descifre
-            byte[] decodedMessage = cipher.doFinal(Arrays.copyOfRange(fileContent, 16, fileContent.length));
-
-            // Texto descifrado
-            ret = new String(decodedMessage);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ret;
-    }
 
     private static String generateRandomPassword(int len) {
         final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
