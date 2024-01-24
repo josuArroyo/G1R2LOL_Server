@@ -22,6 +22,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import java.util.Arrays;
 public class Simetric {
 
     private static final byte[] salt = generateSalt();
@@ -34,12 +35,15 @@ public class Simetric {
         return salt;
     }
 
-    public String cifrarTexto(String clave, String texto, String nombreArchivo) {
+    public String cifrarTexto(String clave, String email, String contrasena, String nombreArchivo) {
         String ret = null;
         KeySpec derivedKey = null;
         SecretKeyFactory secretKeyFactory = null;
 
         try {
+            // Combinar email y contraseña
+            String textoAEncriptar = email + " , " + contrasena;
+
             derivedKey = new PBEKeySpec(clave.toCharArray(), salt, 65536, 128);
             secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 
@@ -47,49 +51,53 @@ public class Simetric {
             SecretKey derivedKeyPBK_AES = new SecretKeySpec(derivedKeyPBK, 0, derivedKeyPBK.length, "AES");
 
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-           
-            
+
             cipher.init(Cipher.ENCRYPT_MODE, derivedKeyPBK_AES);
 
-            byte[] encodedMessage = cipher.doFinal(texto.getBytes());
+            byte[] encodedMessage = cipher.doFinal(textoAEncriptar.getBytes());
             byte[] iv = cipher.getIV();
             byte[] combined = concatArrays(iv, encodedMessage);
-            fileWriter("c:\\Cifrado\\privateKey.der", iv);
+            fileWriter("c:\\Cifrado\\privateKeySimetric.der", iv);
             fileWriter("c:\\Cifrado\\credential.properties", combined);
-            ret = Base64.getEncoder().encodeToString(encodedMessage);
+            ret = new String(encodedMessage);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return ret;
     }
 
-   public String descifrarTexto(String clave, String nombreArchivo) {
-    String ret = null;
-    byte[] fileKey = fileReader("c:\\Cifrado\\privateKey.der");
-    byte[] fileContent = fileReader("c:\\Cifrado\\credential.properties");
+    public String descifrarTexto(String clave, String nombreArchivo) {
+        String ret = null;
+        byte[] fileKey = fileReader("c:\\Cifrado\\privateKeySimetric.der");
+        byte[] fileContent = fileReader("c:\\Cifrado\\credential.properties");
 
-    KeySpec keySpec = null;
-    SecretKeyFactory secretKeyFactory = null;
+        KeySpec keySpec = null;
+        SecretKeyFactory secretKeyFactory = null;
 
-    try {
-        keySpec = new PBEKeySpec(clave.toCharArray(), salt, 65536, 128);
-        secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        try {
+            keySpec = new PBEKeySpec(clave.toCharArray(), salt, 65536, 128);
+            secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 
-        byte[] key = secretKeyFactory.generateSecret(keySpec).getEncoded();
-        SecretKey privateKey = new SecretKeySpec(key, 0, key.length, "AES");
+            byte[] key = secretKeyFactory.generateSecret(keySpec).getEncoded();
+            SecretKey privateKey = new SecretKeySpec(key, 0, key.length, "AES");
 
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        IvParameterSpec ivParam = new IvParameterSpec(Arrays.copyOfRange(fileKey, 0, 16));
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            IvParameterSpec ivParam = new IvParameterSpec(Arrays.copyOfRange(fileKey, 0, 16));
 
-        cipher.init(Cipher.DECRYPT_MODE, privateKey, ivParam);
-        byte[] decodedMessage = cipher.doFinal(Arrays.copyOfRange(fileContent, 16, fileContent.length));
+            cipher.init(Cipher.DECRYPT_MODE, privateKey, ivParam);
+            byte[] decodedMessage = cipher.doFinal(Arrays.copyOfRange(fileContent, 16, fileContent.length));
 
-        ret = new String(decodedMessage);
-    } catch (Exception e) {
-        e.printStackTrace();
+            // Separar email y contraseña después de descifrar
+            String[] partes = new String(decodedMessage).split(" , ");
+            String email = partes[0];
+            String contrasena = partes[1];
+
+            ret = "Email: " + email + ", Contraseña: " + contrasena;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
     }
-    return ret;
-}
 
     private byte[] concatArrays(byte[] array1, byte[] array2) {
         byte[] ret = new byte[array1.length + array2.length];
@@ -120,7 +128,7 @@ public class Simetric {
     public static void main(String[] args) {
 
         Simetric sim = new Simetric();
-       
+
         String rutaCarpeta = "C:\\Cifrado";
 
         // Crear objeto File
@@ -133,15 +141,10 @@ public class Simetric {
             System.err.println("Esa Carpeta ya existen");
         }
 
-        String mensajeCifradoEmail = sim.cifrarTexto("clave", "pruebacorreog1@zohomail.eu", "email");
-        String mensajeCifradoContra = sim.cifrarTexto("clave", "MiPatataSagrada123", "contraseña");
+        String mensajeCifrado = sim.cifrarTexto("clave", "pruebacorreog1@zohomail.eu", "MiPatataSagrada123", "email");
+        System.out.println("Cifrado -> " + mensajeCifrado);
 
-        
-        System.out.println("Cifrado Email -> " + mensajeCifradoEmail);
-        System.out.println("Cifrado Contraseña -> " + mensajeCifradoContra);
-        System.out.println("-----------");
-        System.out.println("Descifrado Email -> " + sim.descifrarTexto("clave", "email"));
-        System.out.println("Descifrado Contraseña -> " + sim.descifrarTexto("clave", "contraseña"));
-        System.out.println("-----------");
+        String mensajeDescifrado = sim.descifrarTexto("clave", "email");
+        System.out.println("Descifrado -> " + mensajeDescifrado);
     }
 }
