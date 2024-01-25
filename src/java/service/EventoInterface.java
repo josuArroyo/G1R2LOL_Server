@@ -28,7 +28,7 @@ public void modifyEvent(Evento event) throws UpdateException;
 public List<Evento> findEventByEventId(Integer id_evento) throws ReadException;
 public List<Evento> viewEventoAforoMax(Integer aforo) throws ReadException;
 public List<Evento> viewEventoByDate (Date fechaEvento) throws ReadException;
- List<Patrocinador> viewEventoByPatrocinador(Integer id_evento) throws ReadException;
+ public List<Patrocinador> viewEventoByPatrocinador(Integer id_evento) throws ReadException;
     
     
 }
