@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
 import entity.Evento;
@@ -31,7 +26,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
  *
@@ -44,9 +38,7 @@ public class PatrocinadorFacadeREST {
     private EntityManager em;
 
     @EJB
-    private PatrocinadorInterface pat;
-
-    Patrocinador patrocinador = new Patrocinador();
+    private PatrocinadorInterface patrocinadorInterface;
 
     public PatrocinadorFacadeREST() {
 
@@ -54,9 +46,9 @@ public class PatrocinadorFacadeREST {
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Patrocinador patrocinador) throws CreateException {
+    public void createPatrocinador(@PathParam("id_patrocinador") Integer id_patrocinador, Patrocinador patrocinador) {
         try {
-            pat.createPatrocinador(patrocinador);
+            patrocinadorInterface.createPatrocinador(patrocinador);
         } catch (CreateException ex) {
             Logger.getLogger(PatrocinadorFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
             throw new InternalServerErrorException(ex.getMessage());
@@ -65,9 +57,9 @@ public class PatrocinadorFacadeREST {
 
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id_patrocinador") Integer id_patrocinador, Patrocinador patrocinador) {
+    public void modifyPatrocinador(@PathParam("id_patrocinador") Integer id_patrocinador, Patrocinador patrocinador) {
         try {
-            pat.modifyPatrocinador(patrocinador);
+            patrocinadorInterface.modifyPatrocinador(patrocinador);
         } catch (UpdateException e) {
             System.out.println(e);
             throw new InternalServerErrorException(e.getMessage());
@@ -76,11 +68,21 @@ public class PatrocinadorFacadeREST {
 
     @DELETE
     @Path("deletePatrocinador/{id_patrocinador}")
-    public void remove(@PathParam("id_patrocinador") int id_patrocinador) {
+    public void deletePatrocinador(@PathParam("id_patrocinador") Integer id_patrocinador) {
         try {
-            pat.deletePatrocinador(pat.viewPatrocinadorById(id_patrocinador));
-
+            patrocinadorInterface.deletePatrocinador(patrocinadorInterface.viewPatrocinadorById(id_patrocinador));
         } catch (ReadException | DeleteException ex) {
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Patrocinador> viewPatrocinadores() {
+        try {
+            return patrocinadorInterface.viewPatrocinadores();
+        } catch (ReadException ex) {
+            System.out.println(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
@@ -88,21 +90,10 @@ public class PatrocinadorFacadeREST {
     @GET
     @Path("ViewBy/String/{nombre}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Patrocinador> viewPatrocinadorByName(@PathParam("nombre") String nombre) throws ReadException {
+    public List<Patrocinador> viewPatrocinadorByName(@PathParam("nombre") String nombre) {
         try {
-            return pat.viewPatrocinadorByName(nombre);
+            return patrocinadorInterface.viewPatrocinadorByName(nombre);
         } catch (ReadException ex) {
-            throw new InternalServerErrorException(ex.getMessage());
-        }
-    }
-
-    @GET
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Patrocinador> findAll() {
-        try {
-            return pat.viewPatrocinadores();
-        } catch (ReadException ex) {
-            System.out.println(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
@@ -111,11 +102,10 @@ public class PatrocinadorFacadeREST {
     @Path("findByDuracion/{DuracionPatrocinio}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Patrocinador> viewPatrocinadorByDuration(@PathParam("DuracionPatrocinio") String DuracionPatrocinio) {
-
         try {
             SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
             Date date = formateador.parse(DuracionPatrocinio);
-            return pat.viewPatrocinadorByDuration(date);
+            return patrocinadorInterface.viewPatrocinadorByDuration(date);
         } catch (ReadException | ParseException ex) {
             Logger.getLogger(PatrocinadorFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
             throw new InternalServerErrorException(ex.getMessage());
@@ -127,7 +117,7 @@ public class PatrocinadorFacadeREST {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Evento> findEventosByPatrocinador(@PathParam("id_patrocinador") Integer id_patrocinador) {
         try {
-            return pat.viewEventosByPatrocinador(id_patrocinador);
+            return patrocinadorInterface.viewEventosByPatrocinador(id_patrocinador);
         } catch (ReadException ex) {
             System.out.println(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -137,5 +127,4 @@ public class PatrocinadorFacadeREST {
     protected EntityManager getEntityManager() {
         return em;
     }
-
 }

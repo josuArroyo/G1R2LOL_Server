@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
 import entity.Evento;
@@ -18,8 +13,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ * Este es el EJB de Patrocinador
  *
- * @author Egoitz
+ * @author 2dam
  */
 @Stateless
 public class PatrocinadorEJB implements PatrocinadorInterface {
@@ -29,7 +25,6 @@ public class PatrocinadorEJB implements PatrocinadorInterface {
 
     @Override
     public void createPatrocinador(Patrocinador patrocinador) throws CreateException {
-
         try {
             em.persist(patrocinador);
         } catch (Exception e) {
@@ -39,10 +34,8 @@ public class PatrocinadorEJB implements PatrocinadorInterface {
 
     @Override
     public void deletePatrocinador(Patrocinador patrocinador) throws DeleteException {
-
         try {
             em.remove(em.merge(patrocinador));
-
         } catch (Exception e) {
             throw new DeleteException(e.getMessage());
         }
@@ -50,13 +43,11 @@ public class PatrocinadorEJB implements PatrocinadorInterface {
 
     @Override
     public void modifyPatrocinador(Patrocinador patrocinador) throws UpdateException {
-
         try {
             if (!em.contains(patrocinador)) {
                 em.merge(patrocinador);
             }
             em.flush();
-
         } catch (Exception e) {
             throw new UpdateException(e.getMessage());
         }
@@ -64,38 +55,39 @@ public class PatrocinadorEJB implements PatrocinadorInterface {
 
     @Override
     public List<Patrocinador> viewPatrocinadores() throws ReadException {
-        List<Patrocinador> patrocinador;
+        List<Patrocinador> patrocinadores;
         try {
-            patrocinador = em.createNamedQuery("findAllPatrocinadores").getResultList();
+            patrocinadores = em.createNamedQuery("findAllPatrocinadores", Patrocinador.class).getResultList();
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }
-        return patrocinador;
+        return patrocinadores;
     }
 
     @Override
     public List<Patrocinador> viewPatrocinadorByName(String nombre) throws ReadException {
-        List<Patrocinador> patrocinador;
+        List<Patrocinador> patrocinadores;
         try {
-            patrocinador = em.createNamedQuery("findForName").setParameter("nombre", nombre).getResultList();
+            patrocinadores = em.createNamedQuery("findForName", Patrocinador.class)
+                    .setParameter("nombre", nombre)
+                    .getResultList();
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }
-
-        return patrocinador;
-
+        return patrocinadores;
     }
 
     @Override
-    public List<Patrocinador> viewPatrocinadorByDuration(Date DuracionPatrocinio) throws ReadException {
-        List<Patrocinador> patrocinador;
+    public List<Patrocinador> viewPatrocinadorByDuration(Date duracion) throws ReadException {
+        List<Patrocinador> patrocinadores;
         try {
-            patrocinador = em.createNamedQuery("findForDuration").setParameter("DuracionPatrocinio", DuracionPatrocinio).getResultList();
+            patrocinadores = em.createNamedQuery("findForDuration", Patrocinador.class)
+                    .setParameter("DuracionPatrocinio", duracion)
+                    .getResultList();
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }
-
-        return patrocinador;
+        return patrocinadores;
     }
 
     @Override
@@ -106,21 +98,19 @@ public class PatrocinadorEJB implements PatrocinadorInterface {
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }
-
         return patrocinador;
     }
 
     @Override
     public List<Evento> viewEventosByPatrocinador(Integer id_patrocinador) throws ReadException {
-        List<Evento> list;
+        List<Evento> eventos;
         try {
-            list = em.createNamedQuery("findEventosByPatrocinador", Evento.class)
+            eventos = em.createNamedQuery("findEventosByPatrocinador", Evento.class)
                     .setParameter("id_patrocinador", id_patrocinador)
                     .getResultList();
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }
-        return list;
+        return eventos;
     }
-
 }

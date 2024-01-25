@@ -6,7 +6,6 @@
 package service;
 
 import entity.Evento;
-import static entity.Evento_.patrocinador;
 import entity.Patrocinador;
 import exception.CreateException;
 import exception.DeleteException;
