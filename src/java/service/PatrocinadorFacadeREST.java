@@ -5,6 +5,7 @@
  */
 package service;
 
+import entity.Evento;
 import entity.Patrocinador;
 import exception.CreateException;
 import exception.DeleteException;
@@ -87,7 +88,7 @@ public class PatrocinadorFacadeREST {
     @GET
     @Path("ViewBy/String/{nombre}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List <Patrocinador> viewPatrocinadorByName(@PathParam("nombre") String nombre) throws ReadException {
+    public List<Patrocinador> viewPatrocinadorByName(@PathParam("nombre") String nombre) throws ReadException {
         try {
             return pat.viewPatrocinadorByName(nombre);
         } catch (ReadException ex) {
@@ -110,13 +111,25 @@ public class PatrocinadorFacadeREST {
     @Path("findByDuracion/{DuracionPatrocinio}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Patrocinador> viewPatrocinadorByDuration(@PathParam("DuracionPatrocinio") String DuracionPatrocinio) {
-            
+
         try {
-             SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
-             Date date = formateador.parse(DuracionPatrocinio);
-             return pat.viewPatrocinadorByDuration(date);
+            SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = formateador.parse(DuracionPatrocinio);
+            return pat.viewPatrocinadorByDuration(date);
         } catch (ReadException | ParseException ex) {
             Logger.getLogger(PatrocinadorFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
+    @GET
+    @Path("getEventosByPatrocinador/{id_patrocinador}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Evento> findEventosByPatrocinador(@PathParam("id_patrocinador") Integer id_patrocinador) {
+        try {
+            return pat.viewEventosByPatrocinador(id_patrocinador);
+        } catch (ReadException ex) {
+            System.out.println(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
