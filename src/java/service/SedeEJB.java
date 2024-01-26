@@ -103,4 +103,17 @@ public class SedeEJB implements SedeInterface {
         return sede;
     }
 
+    @Override
+    public List<Evento> viewEventoBySede(Integer id_sede) throws ReadException {
+        List<Evento> list;
+        try {
+            list = em.createNamedQuery("findEventBySede", Evento.class)
+                    .setParameter("id_sede", id_sede)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new ReadException(e.getMessage());
+        }
+        return list;
+    }
+
 }

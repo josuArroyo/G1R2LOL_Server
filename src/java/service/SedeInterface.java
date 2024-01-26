@@ -34,4 +34,6 @@ public interface SedeInterface {
 
     public List<Sede> viewSedeAforoMax(Integer aforoMax) throws ReadException;
 
+    public List<Evento> viewEventoBySede(Integer id_sede) throws ReadException;
+
 }

@@ -122,6 +122,20 @@ public class SedeFacadeREST {
         }
     }
 
+    @GET
+    @Path("viewEventoBySede/{id_sede}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Evento> findEventoBySede(@PathParam("id_sede") Integer id_sede) {
+        List<Evento> lista;
+        try {
+            lista = inter.viewEventoBySede(id_sede);
+            return lista;
+        } catch (ReadException ex) {
+            System.out.println(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
+
     protected EntityManager getEntityManager() {
         return em;
     }
