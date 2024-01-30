@@ -1,5 +1,4 @@
-package cipher;
-
+package Cipher;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,7 +21,6 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import java.util.Arrays;
 public class Simetric {
 
     private static final byte[] salt = generateSalt();
@@ -141,7 +139,7 @@ public class Simetric {
             System.err.println("Esa Carpeta ya existen");
         }
 
-        String mensajeCifrado = sim.cifrarTexto("clave", "pruebacorreog1@zohomail.eu", "MiPatataSagrada123", "email");
+        String mensajeCifrado = sim.cifrarTexto("clave", "pruebacorreogl@zohomail.eu", "MiPatataSagrada123", "email");
         System.out.println("Cifrado -> " + mensajeCifrado);
 
         String mensajeDescifrado = sim.descifrarTexto("clave", "email");

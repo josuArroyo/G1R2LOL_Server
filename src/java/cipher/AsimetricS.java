@@ -7,13 +7,14 @@ import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import javax.crypto.Cipher;
+import javax.xml.bind.DatatypeConverter;
 
 public class AsimetricS {
 
-    private static final String ENCRYPTED_DATA_PATH = "c:\\Cifrado\\UserCredentialC.properties";
+    //private static final String ENCRYPTED_DATA_PATH = "c:\\Cifrado\\UserCredentialC.properties";
     private static final String PRIVATE_KEY_PATH = "C:\\Cifrado\\privateKey.der";  // Ruta de la clave privada generada por GenerarClaves
 
-    private PrivateKey loadPrivateKey() {
+    public PrivateKey loadPrivateKey() {
         // Load Private Key from file
         try {
             byte[] keyBytes = Files.readAllBytes(Paths.get(PRIVATE_KEY_PATH));
@@ -26,16 +27,27 @@ public class AsimetricS {
         }
     }
 
-    private String decryptData(byte[] data, PrivateKey privateKey) {
+    public String receiveAndDecryptMessage(String encryptedHexData, PrivateKey privateKey) {
+        String decryptedMessage = null;
+
         try {
-            Cipher cipher = Cipher.getInstance("RSA");
+            // Convertir la cadena hexadecimal a un array de bytes
+            byte[] encryptedData = DatatypeConverter.parseHexBinary(encryptedHexData);
+
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
-            byte[] decryptedData = cipher.doFinal(data);
-            return new String(decryptedData);
+
+            // Realizar la operación de descifrado
+            byte[] decryptedData = cipher.doFinal(encryptedData);
+
+            decryptedMessage = new String(decryptedData);
+            System.out.println("Mensaje descifrado en el servidor: " + decryptedMessage);
+
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            System.out.println(e.getMessage());
         }
+
+        return decryptedMessage;
     }
 
     private byte[] fileReader(String path) {
@@ -46,23 +58,5 @@ public class AsimetricS {
             e.printStackTrace();
         }
         return ret;
-    }
-
-    public static void main(String[] args) {
-        AsimetricS asimetricS = new AsimetricS();
-
-        // Load Private Key
-        PrivateKey privateKey = asimetricS.loadPrivateKey(); // Asegúrate de tener la clave privada generada por GenerarClaves
-
-        if (privateKey != null) {
-            // Leer datos cifrados desde el cliente
-            byte[] encryptedData = asimetricS.fileReader(ENCRYPTED_DATA_PATH);
-
-            // Descifrar datos utilizando la clave privada
-            String decryptedMessage = asimetricS.decryptData(encryptedData, privateKey);
-            System.out.println("Descifrado en el servidor: " + decryptedMessage);
-        } else {
-            System.out.println("Error: Clave privada no encontrada.");
-        }
     }
 }
