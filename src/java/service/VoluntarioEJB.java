@@ -79,6 +79,7 @@ public class VoluntarioEJB implements VoluntarioInterface {
             }
             em.flush();
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new UpdateException(e.getMessage());
         }
     }
