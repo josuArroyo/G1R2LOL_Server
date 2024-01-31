@@ -16,6 +16,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -108,6 +109,17 @@ public class UserFacadeREST extends AbstractFacade<User> {
             return inter.findForUserType(userType);
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
+        }
+    }
+    
+    @GET
+    @Path("findUserforEmail/{email}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<User> findUserforEmail(@PathParam("email") String email)  {
+        try {
+            return inter.viewByEmail(email);
+        } catch (Exception e) {
+            throw new InternalServerErrorException(e.getMessage());
         }
     }
 

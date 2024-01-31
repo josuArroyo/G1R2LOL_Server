@@ -86,4 +86,15 @@ public class UserEJB implements UserInterface {
         }
     }
 
+    @Override
+    public List<User> viewByEmail(String email) throws ReadException {
+        
+        try {
+            return em.createNamedQuery("findUserByMail").setParameter("email", email).getResultList();
+            
+        } catch (Exception e) {
+            throw new ReadException(e.getMessage());
+        }
+    }
+
 }

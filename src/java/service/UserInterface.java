@@ -21,5 +21,7 @@ public interface UserInterface {
     public List<User> findForUserType(UserType userType) throws ReadException;
 
     public List<User> viewAllUsers() throws ReadException;
+    
+    public List<User> viewByEmail(String email) throws ReadException;
 
 }

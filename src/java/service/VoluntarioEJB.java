@@ -5,7 +5,7 @@
  */
 package service;
 
-import Cipher.MailCypher;
+import cipher.MailCifrado;
 import cipher.AsimetricS;
 import cipher.HashContra;
 import entity.Voluntario;
@@ -40,10 +40,9 @@ public class VoluntarioEJB implements VoluntarioInterface {
     @Override
     public void recuperarContra(Voluntario volun) throws UpdateException {
         String nuevaContra = null;
-        MailCypher email = new MailCypher();
+        MailCifrado email = new MailCifrado();
         try {
             nuevaContra = email.sendMail(volun.getEmail());
-            System.out.println(nuevaContra);
             nuevaContra = HashContra.hashContra(nuevaContra);
             volun.setPasswd(nuevaContra);
             if (!em.contains(volun)) {

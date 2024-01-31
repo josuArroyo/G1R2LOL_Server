@@ -1,4 +1,4 @@
-package Cipher;
+package cipher;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,9 +23,9 @@ import javax.mail.internet.MimeMessage;
 
 /**
  *
- * @author Diego, Adrían.
+ * @author josu
  */
-public class MailCypher {
+public class MailCifrado {
 
     static String sSalt = "Mensaje super secreto";
     private static byte[] salt = sSalt.getBytes();
@@ -36,9 +36,9 @@ public class MailCypher {
     final String TLS_PORT = "465";
     //465
 
-    final String SENDER_USERNAME = "pruebacorreogl@zohomail.eu";
+    final String SENDER_USERNAME = "pruebacorreog1@zohomail.eu";
     final String SENDER_PASSWORD = "MiPatataSagrada123";
-    private static final Logger LOGGER = java.util.logging.Logger.getLogger("/Cipher/ContraMail");
+    private static final Logger LOGGER = java.util.logging.Logger.getLogger("/cipher/MailCifrado");
 
     public String sendMail(String mailUser) {
         Simetric simi = new Simetric();
