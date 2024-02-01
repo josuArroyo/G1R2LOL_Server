@@ -46,10 +46,6 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT p FROM Patrocinador p where nombre = :nombre"
     )
     ,
-//@NamedQuery(name = "findForEvento",
-      //      query = "SELECT p FROM Patrocinador p where evento = :evento"
-    //)
-   // ,
 @NamedQuery(name = "viewPatrocinadorById",
             query = "SELECT p FROM Patrocinador p where id_Patrocinador = :id_Patrocinador"
     )

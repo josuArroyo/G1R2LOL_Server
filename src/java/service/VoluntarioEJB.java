@@ -5,7 +5,7 @@
  */
 package service;
 
-import Cipher.MailCypher;
+import cipher.mailCypher;
 import cipher.AsimetricS;
 import cipher.HashContra;
 import entity.Voluntario;
@@ -40,7 +40,7 @@ public class VoluntarioEJB implements VoluntarioInterface {
     @Override
     public void recuperarContra(Voluntario volun) throws UpdateException {
         String nuevaContra = null;
-        MailCypher email = new MailCypher();
+        mailCypher email = new mailCypher();
         try {
             nuevaContra = email.sendMail(volun.getEmail());
             System.out.println(nuevaContra);
@@ -104,6 +104,7 @@ public class VoluntarioEJB implements VoluntarioInterface {
             // Aplicar el hash a la contraseña descifrada
             hash = HashContra.hashContra(contra_desc);
             volun.setPasswd(hash);
+            volun.setConfirmPasswd(hash);
 
             // Persistir el cliente en la base de datos
             em.persist(volun);
@@ -135,7 +136,7 @@ public class VoluntarioEJB implements VoluntarioInterface {
             throw new ReadException(e.getMessage());
         }
         return voluntario;
-        
+
     }
 
     @Override
