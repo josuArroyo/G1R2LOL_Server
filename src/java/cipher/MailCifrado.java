@@ -2,16 +2,12 @@ package cipher;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.nio.file.Files;
 import java.security.SecureRandom;
-
 import java.util.Date;
 import java.util.Properties;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -22,8 +18,21 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
- *
- * @author josu
+ * Clase que proporciona funcionalidades para enviar correos electrónicos cifrados.
+ * Utiliza un cifrado simétrico para proteger información sensible, como las credenciales del remitente.
+ * La clase incluye un generador de contraseñas aleatorias y se conecta al servidor SMTP de Zoho para enviar correos electrónicos.
+ * 
+ * <p>
+ * La dirección del servidor SMTP de Zoho y otros detalles de configuración se encuentran en constantes de la clase.
+ * </p>
+ * 
+ * <p>
+ * Utiliza la clase {@link Simetric} para descifrar las credenciales del remitente almacenadas de manera segura.
+ * </p>
+ * 
+ * @author Josu
+ * @version 1.0
+ * @since 2024-02-01
  */
 public class MailCifrado {
 
@@ -40,6 +49,13 @@ public class MailCifrado {
     final String SENDER_PASSWORD = "MiPatataSagrada123";
     private static final Logger LOGGER = java.util.logging.Logger.getLogger("/cipher/MailCifrado");
 
+    /**
+     * Envía un correo electrónico cifrado a la dirección proporcionada.
+     * La contraseña temporal generada se incluirá en el cuerpo del correo.
+     * 
+     * @param mailUser La dirección de correo electrónico del destinatario.
+     * @return La nueva contraseña temporal generada.
+     */
     public String sendMail(String mailUser) {
         Simetric simi = new Simetric();
 
@@ -94,9 +110,14 @@ public class MailCifrado {
         }
 
         return nuevaContra;
-
     }
 
+    /**
+     * Genera una contraseña aleatoria con la longitud especificada.
+     * 
+     * @param len La longitud de la contraseña generada.
+     * @return La contraseña aleatoria generada.
+     */
     public String randomPasswordGenerator(Integer len) {
         final String caracter = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789";
 
@@ -111,6 +132,12 @@ public class MailCifrado {
         return sb.toString();
     }
 
+    /**
+     * Lee el contenido de un archivo y lo devuelve como un array de bytes.
+     * 
+     * @param path La ruta del archivo.
+     * @return El contenido del archivo como un array de bytes.
+     */
     private static byte[] fileReader(String path) {
         byte ret[] = null;
         File file = new File(path);
@@ -122,3 +149,4 @@ public class MailCifrado {
         return ret;
     }
 }
+

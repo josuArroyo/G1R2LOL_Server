@@ -21,6 +21,30 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * Clase que proporciona funcionalidades para cifrar y descifrar texto utilizando un algoritmo de cifrado simétrico AES.
+ * La clase utiliza el algoritmo PBKDF2 para derivar una clave de una contraseña y agrega una operación de cifrado y descifrado AES/CBC/PKCS5Padding.
+ * 
+ * <p>
+ * La clave derivada se utiliza para cifrar el texto y también se almacena junto con el texto cifrado para permitir el descifrado posterior.
+ * </p>
+ * 
+ * <p>
+ * La clase utiliza una sal generada aleatoriamente para mejorar la seguridad de la derivación de la clave.
+ * </p>
+ * 
+ * <p>
+ * Los archivos generados, como la clave y el contenido cifrado, se almacenan en archivos en el sistema de archivos.
+ * </p>
+ * 
+ * <p>
+ * La clase proporciona métodos para cifrar y descifrar texto, así como un método principal de prueba.
+ * </p>
+ * 
+ * @author Josu
+ * @version 1.0
+ * @since 2024-02-01
+ */
 public class Simetric {
 
     private static final byte[] salt = generateSalt();
@@ -33,6 +57,15 @@ public class Simetric {
         return salt;
     }
 
+    /**
+     * Cifra el texto proporcionado utilizando una clave derivada y un algoritmo de cifrado simétrico AES.
+     * 
+     * @param clave La contraseña utilizada para derivar la clave.
+     * @param email El email a cifrar.
+     * @param contrasena La contraseña a cifrar.
+     * @param nombreArchivo El nombre del archivo donde se almacenarán los datos cifrados.
+     * @return El texto cifrado.
+     */
     public String cifrarTexto(String clave, String email, String contrasena, String nombreArchivo) {
         String ret = null;
         KeySpec derivedKey = null;
@@ -55,7 +88,7 @@ public class Simetric {
             byte[] encodedMessage = cipher.doFinal(textoAEncriptar.getBytes());
             byte[] iv = cipher.getIV();
             byte[] combined = concatArrays(iv, encodedMessage);
-            //Estas 2 lineas comentadas son las lineas originales
+            //Estas 2 lineas comentadas son las líneas originales
             //fileWriter("c:\\Cifrado\\privateKeySimetric.der", iv);
             //fileWriter("c:\\Cifrado\\credential.properties", combined);
             fileWriter(getClass().getResource("privateKeySimetric.der").getPath(), iv);
@@ -67,9 +100,16 @@ public class Simetric {
         return ret;
     }
 
+    /**
+     * Descifra el texto cifrado almacenado utilizando una clave derivada y un algoritmo de cifrado simétrico AES.
+     * 
+     * @param clave La contraseña utilizada para derivar la clave.
+     * @param nombreArchivo El nombre del archivo donde se almacenaron los datos cifrados.
+     * @return El texto descifrado.
+     */
     public String descifrarTexto(String clave, String nombreArchivo) {
         String ret = null;
-        //estas 2 lineas son las lineas originales
+        //estas 2 líneas son las líneas originales
         //byte[] fileKey = fileReader("c:\\Cifrado\\privateKeySimetric.der");
         //byte[] fileContent = fileReader("c:\\Cifrado\\credential.properties");
         byte[] fileKey = fileReader(getClass().getResource("privateKeySimetric.der").getPath());
@@ -128,11 +168,16 @@ public class Simetric {
         return ret;
     }
 
+    /**
+     * Método principal de prueba.
+     * 
+     * @param args Los argumentos de la línea de comandos (no se utilizan).
+     */
     public static void main(String[] args) {
 
         Simetric sim = new Simetric();
         
-        //Este metodo es para crear la carpeta
+        //Este método es para crear la carpeta
         //String rutaCarpeta = "C:\\Cifrado";
 
         // Crear objeto File

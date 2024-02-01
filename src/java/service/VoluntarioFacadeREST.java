@@ -29,25 +29,36 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.logging.Logger;
 
-
 /**
+ * Clase que representa un servicio REST para la entidad Voluntario.
+ * Maneja operaciones CRUD (Create, Read, Update, Delete) y otras operaciones específicas
+ * relacionadas con los voluntarios.
  *
  * @author 2dam
+ * @version 1.0
+ * @since 2024-02-01
  */
 @Path("entity.voluntario")
+@Stateless
 public class VoluntarioFacadeREST {
 
     private static final Logger LOGGER = Logger.getLogger("/service/VoluntarioFacadeREST");
+
     @PersistenceContext(unitName = "G1R2LOL_ServerPU")
     private EntityManager em;
 
     @EJB
     private VoluntarioInterface inter;
 
+    /**
+     * Crea un nuevo voluntario.
+     *
+     * @param volun Objeto Voluntario a ser creado.
+     * @throws InternalServerErrorException Si ocurre un error interno durante la creación.
+     */
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Voluntario volun) {
-
+    public void create(Voluntario volun) throws InternalServerErrorException {
         try {
             inter.createVoluntario(volun);
         } catch (CreateException e) {
@@ -55,37 +66,33 @@ public class VoluntarioFacadeREST {
         }
     }
 
-    /*
-    @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Voluntario entity) {
-        super.edit(entity);
-    }
-
-    @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
-    }
-*/
-    
+    /**
+     * Busca un voluntario por su ID.
+     *
+     * @param id ID del voluntario a buscar.
+     * @return El voluntario con el ID especificado.
+     * @throws InternalServerErrorException Si ocurre un error interno durante la búsqueda.
+     */
     @GET
     @Path("buscarVoluntarioPorId/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Voluntario find(@PathParam("id") Integer id) {
+    public Voluntario find(@PathParam("id") Integer id) throws InternalServerErrorException {
         try {
             return inter.filtrarVoluntarioPorID(id);
         } catch (Exception e) {
             throw new InternalServerErrorException(e.getMessage());
         }
-        
-        
     }
-    
+
+    /**
+     * Obtiene la lista de todos los voluntarios.
+     *
+     * @return Lista de todos los voluntarios.
+     * @throws InternalServerErrorException Si ocurre un error interno durante la obtención de la lista.
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Voluntario> findAll() {
+    public List<Voluntario> findAll() throws InternalServerErrorException {
         LOGGER.info("Mostrando todos los voluntarios");
         try {
             return inter.viewAllVoluntarios();
@@ -93,25 +100,17 @@ public class VoluntarioFacadeREST {
             throw new InternalServerErrorException(e.getMessage());
         }
     }
-/*
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Voluntario> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-/*
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
+
+    /**
+     * Cambia la contraseña del voluntario.
+     *
+     * @param volun Objeto Voluntario con la nueva contraseña.
+     * @throws InternalServerErrorException Si ocurre un error interno durante el cambio de contraseña.
      */
     @PUT
     @Path("cambiarContra")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void cambiarContra(Voluntario volun) {
+    public void cambiarContra(Voluntario volun) throws InternalServerErrorException {
         try {
             inter.cambiarContra(volun);
         } catch (UpdateException e) {
@@ -120,10 +119,16 @@ public class VoluntarioFacadeREST {
         }
     }
 
+    /**
+     * Recupera la contraseña del voluntario.
+     *
+     * @param volun Objeto Voluntario para la recuperación de contraseña.
+     * @throws InternalServerErrorException Si ocurre un error interno durante la recuperación de contraseña.
+     */
     @PUT
     @Path("recuperarContra")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void RecuperarContra(Voluntario volun) {
+    public void RecuperarContra(Voluntario volun) throws InternalServerErrorException {
         try {
             inter.recuperarContra(volun);
         } catch (UpdateException e) {
@@ -132,8 +137,13 @@ public class VoluntarioFacadeREST {
         }
     }
 
+    /**
+     * Obtiene el EntityManager asociado a la clase.
+     *
+     * @return EntityManager asociado a la clase.
+     */
     protected EntityManager getEntityManager() {
         return em;
     }
-
 }
+

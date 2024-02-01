@@ -21,8 +21,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
+ * EJB que implementa un servicio REST para gestionar operaciones CRUD
+ * relacionadas con la entidad Socio. Proporciona endpoints para la creación,
+ * edición, eliminación y consulta de socios.
  *
- * @author 2dam
+ * Este EJB utiliza técnicas de JAX-RS para la exposición de servicios RESTful.
+ *
+ * @author Eneko
+ * @version 1.0
+ * @since 2024-02-01
  */
 @Stateless
 @Path("entity.socio")
@@ -31,10 +38,19 @@ public class SocioFacadeREST extends AbstractFacade<Socio> {
     @PersistenceContext(unitName = "G1R2LOL_ServerPU")
     private EntityManager em;
 
+    /**
+     * Constructor por defecto que llama al constructor de la superclase
+     * AbstractFacade inicializando la clase base con la entidad Socio.
+     */
     public SocioFacadeREST() {
         super(Socio.class);
     }
 
+    /**
+     * Crea un nuevo socio.
+     *
+     * @param entity Objeto Socio a ser creado.
+     */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -42,6 +58,12 @@ public class SocioFacadeREST extends AbstractFacade<Socio> {
         super.create(entity);
     }
 
+    /**
+     * Edita un socio existente.
+     *
+     * @param id Identificador único del socio a ser editado.
+     * @param entity Objeto Socio con los datos actualizados.
+     */
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -49,12 +71,23 @@ public class SocioFacadeREST extends AbstractFacade<Socio> {
         super.edit(entity);
     }
 
+    /**
+     * Elimina un socio existente.
+     *
+     * @param id Identificador único del socio a ser eliminado.
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
 
+    /**
+     * Busca y devuelve un socio por su identificador único.
+     *
+     * @param id Identificador único del socio.
+     * @return Objeto Socio con los datos del socio buscado.
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -62,6 +95,11 @@ public class SocioFacadeREST extends AbstractFacade<Socio> {
         return super.find(id);
     }
 
+    /**
+     * Obtiene la lista de todos los socios.
+     *
+     * @return Lista de todos los socios.
+     */
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -69,6 +107,13 @@ public class SocioFacadeREST extends AbstractFacade<Socio> {
         return super.findAll();
     }
 
+    /**
+     * Obtiene una lista de socios en un rango específico.
+     *
+     * @param from Índice de inicio del rango.
+     * @param to Índice de fin del rango.
+     * @return Lista de socios dentro del rango especificado.
+     */
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -76,6 +121,11 @@ public class SocioFacadeREST extends AbstractFacade<Socio> {
         return super.findRange(new int[]{from, to});
     }
 
+    /**
+     * Obtiene la cantidad total de socios.
+     *
+     * @return Cantidad total de socios como cadena de texto.
+     */
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
@@ -83,9 +133,15 @@ public class SocioFacadeREST extends AbstractFacade<Socio> {
         return String.valueOf(super.count());
     }
 
+    /**
+     * Obtiene el EntityManager asociado a la clase.
+     *
+     * @return EntityManager asociado a la clase.
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
     
 }
+

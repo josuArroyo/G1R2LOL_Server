@@ -32,8 +32,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
+ * Clase que implementa un servicio REST para la entidad Evento. Proporciona
+ * métodos para realizar operaciones CRUD relacionadas con eventos, como la
+ * creación, modificación, eliminación y consulta de eventos. Esta clase interactúa
+ * con la base de datos a través de JPA (Java Persistence API) y maneja excepciones
+ * específicas para cada operación.
  *
- * @author 2dam
+ * Los métodos de esta clase permiten gestionar eventos, incluyendo la obtención
+ * de eventos por su identificador, por aforo máximo, por fecha y la obtención de
+ * patrocinadores asociados a un evento.
+ *
+ * @author Eneko
+ * @version 1.0
+ * @since 2024-02-01
  */
 @Path("entity.evento")
 public class EventoFacadeREST {
@@ -44,10 +55,12 @@ public class EventoFacadeREST {
     @EJB
     private EventoInterface inter;
 
-    public EventoFacadeREST() {
-
-    }
-
+    /**
+     * Crea un nuevo evento en la base de datos.
+     *
+     * @param id_evento Identificador único del evento.
+     * @param event Evento a ser creado.
+     */
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void createEvent(@PathParam("id_evento") Integer id_evento, Evento event) {
@@ -60,6 +73,12 @@ public class EventoFacadeREST {
 
     }
 
+    /**
+     * Modifica un evento existente en la base de datos.
+     *
+     * @param id_evento Identificador único del evento.
+     * @param event Evento con los datos actualizados.
+     */
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void modifyEvent(@PathParam("id_evento") Integer id_evento, Evento event) {
@@ -71,6 +90,11 @@ public class EventoFacadeREST {
         }
     }
 
+    /**
+     * Elimina un evento existente de la base de datos.
+     *
+     * @param id_evento Identificador único del evento a ser eliminado.
+     */
     @DELETE
     @Path("DELETE-Evento/{id_evento}")
     public void deleteEvent(@PathParam("id_evento") Integer id_evento) {
@@ -81,6 +105,11 @@ public class EventoFacadeREST {
         }
     }
 
+    /**
+     * Obtiene una lista de todos los eventos almacenados en la base de datos.
+     *
+     * @return Lista de eventos.
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Evento> viewEvents() {
@@ -91,6 +120,12 @@ public class EventoFacadeREST {
         }
     }
 
+    /**
+     * Obtiene una lista de eventos filtrada por su identificador único.
+     *
+     * @param id_evento Identificador único del evento.
+     * @return Lista de eventos filtrada por identificador único.
+     */
     @GET
     @Path("FindEventBy/{id_evento}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -102,6 +137,12 @@ public class EventoFacadeREST {
         }
     }
 
+    /**
+     * Obtiene una lista de eventos filtrada por aforo máximo.
+     *
+     * @param aforo Aforo máximo por el cual filtrar los eventos.
+     * @return Lista de eventos filtrada por aforo máximo.
+     */
     @GET
     @Path("ViewEventByAforo/{aforo}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -113,6 +154,12 @@ public class EventoFacadeREST {
         }
     }
 
+    /**
+     * Obtiene una lista de eventos filtrada por fecha.
+     *
+     * @param fechaEvento Fecha por la cual filtrar los eventos.
+     * @return Lista de eventos filtrada por fecha.
+     */
     @GET
     @Path("viewEventByDate/{fechaEvento}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -129,6 +176,12 @@ public class EventoFacadeREST {
 
     }
 
+    /**
+     * Obtiene una lista de patrocinadores asociados a un evento específico.
+     *
+     * @param id_evento Identificador único del evento.
+     * @return Lista de patrocinadores asociados al evento.
+     */
     @GET
     @Path("getPatrocinadorByEvento/{id_evento}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -148,3 +201,4 @@ public class EventoFacadeREST {
     }
 
 }
+

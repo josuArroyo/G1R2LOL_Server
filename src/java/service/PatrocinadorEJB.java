@@ -18,8 +18,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ * Clase EJB (Enterprise JavaBeans) que implementa la interfaz PatrocinadorInterface.
+ * Proporciona métodos para realizar operaciones CRUD relacionadas con la entidad
+ * Patrocinador. Esta clase interactúa con la base de datos a través de JPA (Java
+ * Persistence API) y maneja excepciones específicas para cada operación.
+ *
+ * Los métodos de esta clase gestionan la creación, modificación, eliminación y consulta
+ * de patrocinadores, así como la obtención de eventos asociados a un patrocinador.
  *
  * @author Egoitz
+ * @version 1.0
+ * @since 2024-02-01
  */
 @Stateless
 public class PatrocinadorEJB implements PatrocinadorInterface {
@@ -27,6 +36,12 @@ public class PatrocinadorEJB implements PatrocinadorInterface {
     @PersistenceContext(unitName = "G1R2LOL_ServerPU")
     private EntityManager em;
 
+    /**
+     * Crea un nuevo patrocinador en la base de datos.
+     *
+     * @param patrocinador Patrocinador a ser creado.
+     * @throws CreateException Si hay un error al persistir el patrocinador en la base de datos.
+     */
     @Override
     public void createPatrocinador(Patrocinador patrocinador) throws CreateException {
 
@@ -37,6 +52,12 @@ public class PatrocinadorEJB implements PatrocinadorInterface {
         }
     }
 
+    /**
+     * Elimina un patrocinador existente de la base de datos.
+     *
+     * @param patrocinador Patrocinador a ser eliminado.
+     * @throws DeleteException Si hay un error al eliminar el patrocinador de la base de datos.
+     */
     @Override
     public void deletePatrocinador(Patrocinador patrocinador) throws DeleteException {
 
@@ -48,6 +69,12 @@ public class PatrocinadorEJB implements PatrocinadorInterface {
         }
     }
 
+    /**
+     * Modifica un patrocinador existente en la base de datos.
+     *
+     * @param patrocinador Patrocinador con los datos actualizados.
+     * @throws UpdateException Si hay un error al actualizar el patrocinador en la base de datos.
+     */
     @Override
     public void modifyPatrocinador(Patrocinador patrocinador) throws UpdateException {
 
@@ -62,42 +89,66 @@ public class PatrocinadorEJB implements PatrocinadorInterface {
         }
     }
 
+    /**
+     * Obtiene una lista de todos los patrocinadores almacenados en la base de datos.
+     *
+     * @return Lista de patrocinadores.
+     * @throws ReadException Si hay un error al recuperar los patrocinadores desde la base de datos.
+     */
     @Override
     public List<Patrocinador> viewPatrocinadores() throws ReadException {
-        List<Patrocinador> patrocinador;
+        List<Patrocinador> patrocinadores;
         try {
-            patrocinador = em.createNamedQuery("findAllPatrocinadores").getResultList();
+            patrocinadores = em.createNamedQuery("findAllPatrocinadores").getResultList();
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }
-        return patrocinador;
+        return patrocinadores;
     }
 
+    /**
+     * Obtiene una lista de patrocinadores filtrada por nombre.
+     *
+     * @param nombre Nombre por el cual filtrar los patrocinadores.
+     * @return Lista de patrocinadores filtrada por nombre.
+     * @throws ReadException Si hay un error al recuperar los patrocinadores desde la base de datos.
+     */
     @Override
     public List<Patrocinador> viewPatrocinadorByName(String nombre) throws ReadException {
-        List<Patrocinador> patrocinador;
+        List<Patrocinador> patrocinadores;
         try {
-            patrocinador = em.createNamedQuery("findForName").setParameter("nombre", nombre).getResultList();
+            patrocinadores = em.createNamedQuery("findForName").setParameter("nombre", nombre).getResultList();
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }
-
-        return patrocinador;
-
+        return patrocinadores;
     }
 
+    /**
+     * Obtiene una lista de patrocinadores filtrada por duración de patrocinio.
+     *
+     * @param DuracionPatrocinio Duración por la cual filtrar los patrocinadores.
+     * @return Lista de patrocinadores filtrada por duración de patrocinio.
+     * @throws ReadException Si hay un error al recuperar los patrocinadores desde la base de datos.
+     */
     @Override
     public List<Patrocinador> viewPatrocinadorByDuration(Date DuracionPatrocinio) throws ReadException {
-        List<Patrocinador> patrocinador;
+        List<Patrocinador> patrocinadores;
         try {
-            patrocinador = em.createNamedQuery("findForDuration").setParameter("DuracionPatrocinio", DuracionPatrocinio).getResultList();
+            patrocinadores = em.createNamedQuery("findForDuration").setParameter("DuracionPatrocinio", DuracionPatrocinio).getResultList();
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }
-
-        return patrocinador;
+        return patrocinadores;
     }
 
+    /**
+     * Obtiene un patrocinador específico por su identificador único.
+     *
+     * @param id_patrocinador Identificador único del patrocinador.
+     * @return Patrocinador con el identificador proporcionado.
+     * @throws ReadException Si hay un error al recuperar el patrocinador desde la base de datos.
+     */
     @Override
     public Patrocinador viewPatrocinadorById(Integer id_patrocinador) throws ReadException {
         Patrocinador patrocinador;
@@ -106,21 +157,27 @@ public class PatrocinadorEJB implements PatrocinadorInterface {
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }
-
         return patrocinador;
     }
 
+    /**
+     * Obtiene una lista de eventos asociados a un patrocinador específico.
+     *
+     * @param id_patrocinador Identificador único del patrocinador.
+     * @return Lista de eventos asociados al patrocinador.
+     * @throws ReadException Si hay un error al recuperar los eventos desde la base de datos.
+     */
     @Override
     public List<Evento> viewEventosByPatrocinador(Integer id_patrocinador) throws ReadException {
-        List<Evento> list;
+        List<Evento> eventos;
         try {
-            list = em.createNamedQuery("findEventosByPatrocinador", Evento.class)
+            eventos = em.createNamedQuery("findEventosByPatrocinador", Evento.class)
                     .setParameter("id_patrocinador", id_patrocinador)
                     .getResultList();
         } catch (Exception e) {
             throw new ReadException(e.getMessage());
         }
-        return list;
+        return eventos;
     }
-
 }
+
