@@ -1,25 +1,38 @@
 package cipher;
 
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.ResourceBundle;
 import javax.crypto.Cipher;
 import javax.xml.bind.DatatypeConverter;
+
+
 
 public class AsimetricS {
 
     //private static final String ENCRYPTED_DATA_PATH = "c:\\Cifrado\\UserCredentialC.properties";
-    private static final String PRIVATE_KEY_PATH = "C:\\Cifrado\\privateKey.der";  // Ruta de la clave privada generada por GenerarClaves
-
+    //esta es la linea original
+    private static final String PRIVATE_KEY_PATH = "src/cipher/privateKey.der";  
+    
     public PrivateKey loadPrivateKey() {
         // Load Private Key from file
         try {
-            byte[] keyBytes = Files.readAllBytes(Paths.get(PRIVATE_KEY_PATH));
-            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
+            byte[] keyBytes = fileReader(getClass().getResource("privateKey.der").getPath());
+           // byte[] privateKeyBytes;
+           // FileInputStream fis = new FileInputStream(".//src//cipher//privateKey.der");
+            //privateKeyBytes = new byte[fis.available()];
+            //fis.read(privateKeyBytes);
+          
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
             return keyFactory.generatePrivate(spec);
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,10 +63,24 @@ public class AsimetricS {
         return decryptedMessage;
     }
 
-    private byte[] fileReader(String path) {
+    /*private byte[] fileReader(String path) {
         byte[] ret = null;
         try {
-            ret = Files.readAllBytes(Paths.get(path));
+            //ret = Files.readAllBytes(getClass().getResourceAsStream("publicKey.der"));
+           InputStream in= getClass().getResourceAsStream("privateKey.der");
+           ret =  toByteArray(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }*/
+    private byte[] fileReader(String path) {
+        byte[] ret = null;
+        File file = new File (path);
+        try {
+           ret= Files.readAllBytes(file.toPath());
+          // InputStream in= getClass().getResourceAsStream("publicKey.der");
+           //ret = toByteArray(in);
         } catch (IOException e) {
             e.printStackTrace();
         }

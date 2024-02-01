@@ -29,6 +29,8 @@ public class UserEJB implements UserInterface {
 
     @PersistenceContext(unitName = "G1R2LOL_ServerPU")
     private EntityManager em;
+    
+    private static final String PRIVATE_KEY_PATH = "./src/cipher/privateKey.der";
 
     @Override
     public List<User> findUserByEmailAndPasswd(String email, String passwd) throws ReadException {
@@ -36,8 +38,11 @@ public class UserEJB implements UserInterface {
             String contra = null;
             String contra_desc = null;
             String hash = null;
-
-            PrivateKey privateKey = loadPrivateKeyFromFile("C:\\Cifrado\\privateKey.der");
+            AsimetricS asimetricS = new AsimetricS();
+            PrivateKey privateKey;
+            privateKey = asimetricS.loadPrivateKey();
+            
+            
 
             // Descifrar la contraseña utilizando la clave privada
             AsimetricS asi = new AsimetricS();
@@ -74,17 +79,8 @@ public class UserEJB implements UserInterface {
         return user;
     }
 
-    private PrivateKey loadPrivateKeyFromFile(String filePath) {
-        try {
-            byte[] keyBytes = Files.readAllBytes(Paths.get(filePath));
-            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            return keyFactory.generatePrivate(spec);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+    
+    
 
     @Override
     public List<User> viewByEmail(String email) throws ReadException {

@@ -61,7 +61,7 @@ public class VoluntarioEJB implements VoluntarioInterface {
         String hash = null;
         String contra_desc = null;
         try {
-            PrivateKey privateKey = loadPrivateKeyFromFile("C:\\Cifrado\\privateKey.der");
+            PrivateKey privateKey = loadPrivateKeyFromFile("src\\cipher\\privateKey.der");
 
             // Obtener la contraseña del cliente
             contra = volun.getPasswd();
@@ -92,7 +92,7 @@ public class VoluntarioEJB implements VoluntarioInterface {
 
         try {
             // Cargar la clave privada desde el archivo después de haberse generado
-            PrivateKey privateKey = loadPrivateKeyFromFile("C:\\Cifrado\\privateKey.der");
+            PrivateKey privateKey = loadPrivateKeyFromFile("src/cipher/privateKey.der");
 
             // Obtener la contraseña del cliente
             contra = volun.getPasswd();
@@ -104,6 +104,7 @@ public class VoluntarioEJB implements VoluntarioInterface {
             // Aplicar el hash a la contraseña descifrada
             hash = HashContra.hashContra(contra_desc);
             volun.setPasswd(hash);
+            volun.setConfirmPasswd(hash);
 
             // Persistir el cliente en la base de datos
             em.persist(volun);

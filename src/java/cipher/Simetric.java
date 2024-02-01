@@ -55,8 +55,11 @@ public class Simetric {
             byte[] encodedMessage = cipher.doFinal(textoAEncriptar.getBytes());
             byte[] iv = cipher.getIV();
             byte[] combined = concatArrays(iv, encodedMessage);
-            fileWriter("c:\\Cifrado\\privateKeySimetric.der", iv);
-            fileWriter("c:\\Cifrado\\credential.properties", combined);
+            //Estas 2 lineas comentadas son las lineas originales
+            //fileWriter("c:\\Cifrado\\privateKeySimetric.der", iv);
+            //fileWriter("c:\\Cifrado\\credential.properties", combined);
+            fileWriter("/cipher/privateKeySimetric.der", iv);
+            fileWriter("/cipher/credential.properties", combined);
             ret = new String(encodedMessage);
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,9 +69,11 @@ public class Simetric {
 
     public String descifrarTexto(String clave, String nombreArchivo) {
         String ret = null;
-        byte[] fileKey = fileReader("c:\\Cifrado\\privateKeySimetric.der");
-        byte[] fileContent = fileReader("c:\\Cifrado\\credential.properties");
-
+        //estas 2 lineas son las lineas originales
+        //byte[] fileKey = fileReader("c:\\Cifrado\\privateKeySimetric.der");
+        //byte[] fileContent = fileReader("c:\\Cifrado\\credential.properties");
+        byte[] fileKey = fileReader("/cipher/privateKeySimetric.der");
+        byte[] fileContent = fileReader("/cipher/credential.properties");
         KeySpec keySpec = null;
         SecretKeyFactory secretKeyFactory = null;
 
@@ -126,18 +131,19 @@ public class Simetric {
     public static void main(String[] args) {
 
         Simetric sim = new Simetric();
-
-        String rutaCarpeta = "C:\\Cifrado";
+        
+        //Este metodo es para crear la carpeta
+        //String rutaCarpeta = "C:\\Cifrado";
 
         // Crear objeto File
-        File carpeta = new File(rutaCarpeta);
+        //File carpeta = new File(rutaCarpeta);
 
         // Utilizar el método mkdir para crear la carpeta
-        if (carpeta.mkdir()) {
-            System.out.println("Carpeta creada exitosamente en C:");
-        } else {
-            System.err.println("Esa Carpeta ya existen");
-        }
+        //if (carpeta.mkdir()) {
+           // System.out.println("Carpeta creada exitosamente en C:");
+        //} else {
+          //  System.err.println("Esa Carpeta ya existen");
+        //}
 
         String mensajeCifrado = sim.cifrarTexto("clave", "pruebacorreogl@zohomail.eu", "MiPatataSagrada123", "email");
         System.out.println("Cifrado -> " + mensajeCifrado);
