@@ -61,9 +61,14 @@ public class VoluntarioEJB implements VoluntarioInterface {
         String contra = null;
         String hash = null;
         String contra_desc = null;
-        
+        AsimetricS asimetricS = new AsimetricS();
         try {
-            PrivateKey privateKey = loadPrivateKeyFromFile("src\\cipher\\privateKey.der");
+
+            PrivateKey privateKey;
+
+            // Cargar la clave privada desde el archivo después de haberse generado
+            privateKey = asimetricS.loadPrivateKey();
+          
 
             // Obtener la contraseña del cliente
             contra = volun.getPasswd();
@@ -91,21 +96,19 @@ public class VoluntarioEJB implements VoluntarioInterface {
         String contra = null;
         String hash = null;
         String contra_desc = null;
-        AsimetricS  asimetricS= new AsimetricS();
+        AsimetricS asimetricS = new AsimetricS();
         try {
-            
-           
+
             PrivateKey privateKey;
-          
+
             // Cargar la clave privada desde el archivo después de haberse generado
-             privateKey =asimetricS.loadPrivateKey();
+            privateKey = asimetricS.loadPrivateKey();
 
             // Obtener la contraseña del cliente
             contra = volun.getPasswd();
 
             // Descifrar la contraseña utilizando la clave privada
-            AsimetricS asi = new AsimetricS();
-            contra_desc = asi.receiveAndDecryptMessage(contra, privateKey);
+            contra_desc = asimetricS.receiveAndDecryptMessage(contra, privateKey);
 
             // Aplicar el hash a la contraseña descifrada
             hash = HashContra.hashContra(contra_desc);
@@ -142,7 +145,7 @@ public class VoluntarioEJB implements VoluntarioInterface {
             throw new ReadException(e.getMessage());
         }
         return voluntario;
-        
+
     }
 
     @Override

@@ -58,8 +58,8 @@ public class Simetric {
             //Estas 2 lineas comentadas son las lineas originales
             //fileWriter("c:\\Cifrado\\privateKeySimetric.der", iv);
             //fileWriter("c:\\Cifrado\\credential.properties", combined);
-            fileWriter("/cipher/privateKeySimetric.der", iv);
-            fileWriter("/cipher/credential.properties", combined);
+            fileWriter(getClass().getResource("privateKeySimetric.der").getPath(), iv);
+            fileWriter(getClass().getResource("credential.properties").getPath(), combined);
             ret = new String(encodedMessage);
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,8 +72,8 @@ public class Simetric {
         //estas 2 lineas son las lineas originales
         //byte[] fileKey = fileReader("c:\\Cifrado\\privateKeySimetric.der");
         //byte[] fileContent = fileReader("c:\\Cifrado\\credential.properties");
-        byte[] fileKey = fileReader("/cipher/privateKeySimetric.der");
-        byte[] fileContent = fileReader("/cipher/credential.properties");
+        byte[] fileKey = fileReader(getClass().getResource("privateKeySimetric.der").getPath());
+        byte[] fileContent = fileReader(getClass().getResource("credential.properties").getPath());
         KeySpec keySpec = null;
         SecretKeyFactory secretKeyFactory = null;
 
