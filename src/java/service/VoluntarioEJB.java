@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.List;
 import java.util.logging.Level;
@@ -60,6 +61,7 @@ public class VoluntarioEJB implements VoluntarioInterface {
         String contra = null;
         String hash = null;
         String contra_desc = null;
+        
         try {
             PrivateKey privateKey = loadPrivateKeyFromFile("src\\cipher\\privateKey.der");
 
@@ -89,10 +91,14 @@ public class VoluntarioEJB implements VoluntarioInterface {
         String contra = null;
         String hash = null;
         String contra_desc = null;
-
+        AsimetricS  asimetricS= new AsimetricS();
         try {
+            
+           
+            PrivateKey privateKey;
+          
             // Cargar la clave privada desde el archivo después de haberse generado
-            PrivateKey privateKey = loadPrivateKeyFromFile("src/cipher/privateKey.der");
+             privateKey =asimetricS.loadPrivateKey();
 
             // Obtener la contraseña del cliente
             contra = volun.getPasswd();
