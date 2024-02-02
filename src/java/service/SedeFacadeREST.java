@@ -30,8 +30,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
+ * EJB que implementa un servicio REST para gestionar operaciones CRUD
+ * relacionadas con la entidad Sede. Proporciona endpoints para la creación,
+ * modificación, eliminación y consulta de sedes.
  *
- * @author 2dam
+ * Este EJB utiliza técnicas de JAX-RS para la exposición de servicios RESTful.
+ *
+ * @author Eneko
+ * @version 1.0
+ * @since 2024-02-01
  */
 @Path("entity.sede")
 public class SedeFacadeREST {
@@ -45,7 +52,13 @@ public class SedeFacadeREST {
     public SedeFacadeREST() {
 
     }
-
+    
+    /**
+     * Crea una nueva sede.
+     *
+     * @param id_sede Identificador único de la sede.
+     * @param sede Objeto Sede a ser creado.
+     */
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void createSede(@PathParam("id_sede") Integer id_sede, Sede sede) {
@@ -55,7 +68,13 @@ public class SedeFacadeREST {
             throw new InternalServerErrorException(e.getMessage());
         }
     }
-
+    
+    /**
+     * Modifica una sede existente.
+     *
+     * @param id_sede Identificador único de la sede a ser modificada.
+     * @param sede Objeto Sede con los datos actualizados.
+     */
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void modifySede(@PathParam("id_sede") Integer id_sede, Sede sede) {
@@ -66,7 +85,12 @@ public class SedeFacadeREST {
             throw new InternalServerErrorException(e.getMessage());
         }
     }
-
+    
+    /**
+     * Elimina una sede existente.
+     *
+     * @param id_sede Identificador único de la sede a ser eliminada.
+     */
     @DELETE
     @Path("DELETE-Sede/{id_sede}")
     public void deleteSede(@PathParam("id_sede") Integer id_sede) {
@@ -78,7 +102,12 @@ public class SedeFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    
+    /**
+     * Obtiene la lista de todas las sedes.
+     *
+     * @return Lista de todas las sedes.
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Sede> viewSedes() {
@@ -88,7 +117,13 @@ public class SedeFacadeREST {
             throw new InternalServerErrorException(e.getMessage());
         }
     }
-
+    
+    /**
+     * Obtiene la lista de sedes filtrada por país.
+     *
+     * @param pais País por el cual filtrar las sedes.
+     * @return Lista de sedes filtrada por país.
+     */
     @GET
     @Path("ViewSedeBy/String/{pais}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -99,7 +134,13 @@ public class SedeFacadeREST {
             throw new InternalServerErrorException(e.getMessage());
         }
     }
-
+    
+    /**
+     * Obtiene la lista de sedes filtrada por aforo máximo.
+     *
+     * @param aforoMax Aforo máximo por el cual filtrar las sedes.
+     * @return Lista de sedes filtrada por aforo máximo.
+     */
     @GET
     @Path("ViewSedeByAforoMax/{aforoMax}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -110,7 +151,13 @@ public class SedeFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    
+    /**
+     * Obtiene una sede por su identificador único.
+     *
+     * @param id_sede Identificador único de la sede.
+     * @return Objeto Sede con los datos de la sede buscada.
+     */
     @GET
     @Path("ViewSedeById/{id_sede}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -121,7 +168,13 @@ public class SedeFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
-
+    
+    /**
+     * Obtiene la lista de eventos asociados a una sede.
+     *
+     * @param id_sede Identificador único de la sede.
+     * @return Lista de eventos asociados a la sede.
+     */
     @GET
     @Path("viewEventoBySede/{id_sede}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

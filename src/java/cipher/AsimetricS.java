@@ -21,6 +21,11 @@ public class AsimetricS {
     //private static final String ENCRYPTED_DATA_PATH = "c:\\Cifrado\\UserCredentialC.properties";
     //esta es la linea original
     private static final String PRIVATE_KEY_PATH = "src/cipher/privateKey.der";  
+    /**
+     * Carga la clave privada desde el archivo especificado.
+     *
+     * @return La clave privada cargada desde el archivo.
+     */
     
     public PrivateKey loadPrivateKey() {
         // Load Private Key from file
@@ -40,6 +45,13 @@ public class AsimetricS {
         }
     }
 
+     /**
+     * Recibe y descifra un mensaje en formato hexadecimal utilizando la clave privada proporcionada.
+     *
+     * @param encryptedHexData El mensaje cifrado en formato hexadecimal.
+     * @param privateKey La clave privada utilizada para descifrar el mensaje.
+     * @return El mensaje descifrado.
+     */
     public String receiveAndDecryptMessage(String encryptedHexData, PrivateKey privateKey) {
         String decryptedMessage = null;
 
@@ -74,6 +86,12 @@ public class AsimetricS {
         }
         return ret;
     }*/
+    /**
+     * Lee los bytes de un archivo y los devuelve como un array de bytes.
+     *
+     * @param path La ruta del archivo.
+     * @return Un array de bytes que representa el contenido del archivo.
+     */
     private byte[] fileReader(String path) {
         byte[] ret = null;
         File file = new File (path);

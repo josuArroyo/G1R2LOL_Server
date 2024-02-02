@@ -21,8 +21,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ * EJB que implementa la interfaz UserInterface para gestionar operaciones
+ * relacionadas con los usuarios. Proporciona métodos para la autenticación de
+ * usuarios, consulta por tipo de usuario, visualización de todos los usuarios,
+ * y búsqueda por correo electrónico.
  *
- * @author Eneko.
+ * Este EJB utiliza técnicas de cifrado asimétrico y aplicación de hash para
+ * gestionar la autenticación segura de usuarios.
+ *
+ * @author Eneko
+ * @version 1.0
+ * @since 2024-02-01
  */
 @Stateless
 public class UserEJB implements UserInterface {
@@ -31,7 +40,15 @@ public class UserEJB implements UserInterface {
     private EntityManager em;
     
     private static final String PRIVATE_KEY_PATH = "./src/cipher/privateKey.der";
-
+    
+     /**
+     * Autentica a un usuario por correo electrónico y contraseña.
+     *
+     * @param email Correo electrónico del usuario.
+     * @param passwd Contraseña del usuario cifrada.
+     * @return Lista de usuarios autenticados.
+     * @throws ReadException Si ocurre un error durante la autenticación.
+     */
     @Override
     public List<User> findUserByEmailAndPasswd(String email, String passwd) throws ReadException {
         try {
@@ -57,7 +74,14 @@ public class UserEJB implements UserInterface {
 
         }
     }
-
+    
+    /**
+     * Busca usuarios por tipo de usuario.
+     *
+     * @param userType Tipo de usuario a ser filtrado.
+     * @return Lista de usuarios del tipo especificado.
+     * @throws ReadException Si ocurre un error durante la consulta.
+     */
     @Override
     public List<User> findForUserType(UserType userType) throws ReadException {
         try {
@@ -66,7 +90,13 @@ public class UserEJB implements UserInterface {
             throw new ReadException(e.getMessage());
         }
     }
-
+    
+    /**
+     * Obtiene la lista de todos los usuarios.
+     *
+     * @return Lista de todos los usuarios.
+     * @throws ReadException Si ocurre un error durante la lectura.
+     */
     @Override
     public List<User> viewAllUsers() throws ReadException {
         List<User> user = null;
@@ -81,7 +111,13 @@ public class UserEJB implements UserInterface {
 
     
     
-
+    /**
+     * Busca y devuelve usuarios por correo electrónico.
+     *
+     * @param email Correo electrónico del usuario a ser buscado.
+     * @return Lista de usuarios con el correo electrónico especificado.
+     * @throws ReadException Si ocurre un error durante la consulta.
+     */
     @Override
     public List<User> viewByEmail(String email) throws ReadException {
         

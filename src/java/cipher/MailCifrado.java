@@ -25,6 +25,20 @@ import javax.mail.internet.MimeMessage;
  *
  * @author josu
  */
+/**
+ * La clase MailCifrado proporciona métodos para enviar correos electrónicos cifrados
+ * con una contraseña temporal generada aleatoriamente para la recuperación de contraseñas.
+ *
+ * <p>La clase utiliza el algoritmo de cifrado simétrico para descifrar las credenciales del cliente
+ * necesarias para autenticarse en el servidor de correo.</p>
+ *
+ * <p>Los correos electrónicos se envían utilizando el protocolo SMTPS (SMTP seguro) a través del servidor
+ * Zoho con la información de autenticación proporcionada.</p>
+ *
+ * <p>Se incluye un mensaje estándar de recuperación de contraseña en el correo electrónico enviado.</p>
+ *
+ * <p>Esta clase forma parte del paquete cipher.</p>
+ */
 public class MailCifrado {
 
     static String sSalt = "Mensaje super secreto";
@@ -40,6 +54,13 @@ public class MailCifrado {
     final String SENDER_PASSWORD = "MiPatataSagrada123";
     private static final Logger LOGGER = java.util.logging.Logger.getLogger("/cipher/MailCifrado");
 
+    /**
+     * Envía un correo electrónico cifrado con una contraseña temporal generada aleatoriamente
+     * para la recuperación de contraseñas.
+     *
+     * @param mailUser La dirección de correo electrónico del destinatario.
+     * @return La nueva contraseña temporal generada y enviada por correo.
+     */
     public String sendMail(String mailUser) {
         Simetric simi = new Simetric();
 
@@ -97,6 +118,12 @@ public class MailCifrado {
 
     }
 
+    /**
+     * Genera una contraseña aleatoria de la longitud especificada.
+     *
+     * @param len La longitud de la contraseña generada.
+     * @return Una cadena que representa la contraseña aleatoria generada.
+     */
     public String randomPasswordGenerator(Integer len) {
         final String caracter = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz0123456789";
 

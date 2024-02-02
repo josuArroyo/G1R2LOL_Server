@@ -37,7 +37,13 @@ public class VoluntarioEJB implements VoluntarioInterface {
     private EntityManager em;
 
     private AbstractFacade abs;
-
+    
+    /**
+     * Recupera la contraseña del voluntario mediante el envío de un correo electrónico cifrado.
+     *
+     * @param volun Objeto Voluntario para recuperar la contraseña.
+     * @throws UpdateException Si ocurre un error durante la actualización.
+     */
     @Override
     public void recuperarContra(Voluntario volun) throws UpdateException {
         String nuevaContra = null;
@@ -55,7 +61,12 @@ public class VoluntarioEJB implements VoluntarioInterface {
             throw new UpdateException(e.getMessage());
         }
     }
-
+    /**
+     * Cambia la contraseña del voluntario mediante cifrado asimétrico y aplicación de hash.
+     *
+     * @param volun Objeto Voluntario con la nueva contraseña cifrada.
+     * @throws UpdateException Si ocurre un error durante la actualización.
+     */
     @Override
     public void cambiarContra(Voluntario volun) throws UpdateException {
         String contra = null;
@@ -90,7 +101,13 @@ public class VoluntarioEJB implements VoluntarioInterface {
             throw new UpdateException(e.getMessage());
         }
     }
-
+    
+    /**
+     * Crea un nuevo voluntario cifrando la contraseña y aplicando hash antes de persistir en la base de datos.
+     *
+     * @param volun Objeto Voluntario a ser creado.
+     * @throws CreateException Si ocurre un error durante la creación.
+     */
     @Override
     public void createVoluntario(Voluntario volun) throws CreateException {
         String contra = null;
@@ -121,7 +138,12 @@ public class VoluntarioEJB implements VoluntarioInterface {
             throw new CreateException(e.getMessage());
         }
     }
-
+    /**
+     * Método para cargar la clave privada desde un archivo.
+     *
+     * @param filePath Ruta del archivo que contiene la clave privada.
+     * @return La clave privada cargada desde el archivo.
+     */
     // Método para cargar la clave privada desde un archivo
     private PrivateKey loadPrivateKeyFromFile(String filePath) {
         try {
@@ -134,7 +156,13 @@ public class VoluntarioEJB implements VoluntarioInterface {
             return null;
         }
     }
-
+    
+    /**
+     * Obtiene la lista de todos los voluntarios mediante una consulta a la base de datos.
+     *
+     * @return Lista de todos los voluntarios.
+     * @throws ReadException Si ocurre un error durante la lectura.
+     */
     @Override
     public List<Voluntario> viewAllVoluntarios() throws ReadException {
         List<Voluntario> voluntario = null;
@@ -147,7 +175,14 @@ public class VoluntarioEJB implements VoluntarioInterface {
         return voluntario;
 
     }
-
+    
+    /**
+     * Filtra y devuelve un voluntario por su ID.
+     *
+     * @param id ID del voluntario a buscar.
+     * @return El voluntario con el ID especificado.
+     * @throws ReadException Si ocurre un error durante la lectura.
+     */
     @Override
     public Voluntario filtrarVoluntarioPorID(Integer id) throws ReadException {
         Voluntario voluntario;

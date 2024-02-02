@@ -21,6 +21,17 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * La clase Simetric proporciona métodos para cifrar y descifrar texto utilizando
+ * un algoritmo simétrico AES en modo CBC con relleno PKCS5Padding.
+ *
+ * <p>La clase utiliza una clave derivada de una contraseña mediante el algoritmo PBKDF2.</p>
+ *
+ * <p>Los datos cifrados se guardan en archivos, y se utilizan archivos separados para la clave
+ * y el contenido cifrado.</p>
+ *
+ * <p>Esta clase forma parte del paquete cipher.</p>
+ */
 public class Simetric {
 
     private static final byte[] salt = generateSalt();
@@ -33,6 +44,15 @@ public class Simetric {
         return salt;
     }
 
+    /**
+     * Cifra el texto proporcionado y guarda la clave y el contenido cifrado en archivos separados.
+     *
+     * @param clave La contraseña utilizada para derivar la clave de cifrado.
+     * @param email La dirección de correo electrónico a cifrar.
+     * @param contrasena La contraseña a cifrar.
+     * @param nombreArchivo El nombre del archivo en el que se guardarán los datos cifrados.
+     * @return El texto cifrado.
+     */
     public String cifrarTexto(String clave, String email, String contrasena, String nombreArchivo) {
         String ret = null;
         KeySpec derivedKey = null;
@@ -67,6 +87,13 @@ public class Simetric {
         return ret;
     }
 
+      /**
+     * Descifra el texto cifrado previamente guardado en archivos utilizando la contraseña proporcionada.
+     *
+     * @param clave La contraseña utilizada para derivar la clave de descifrado.
+     * @param nombreArchivo El nombre del archivo que contiene los datos cifrados.
+     * @return El texto descifrado.
+     */
     public String descifrarTexto(String clave, String nombreArchivo) {
         String ret = null;
         //estas 2 lineas son las lineas originales
